@@ -6,6 +6,24 @@
 const fs = require('fs');
 const path = require('path');
 
+// Load environment variables from .env file for local development
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, 'utf8');
+    const envLines = envContent.split('\n');
+    
+    envLines.forEach(line => {
+        const trimmedLine = line.trim();
+        if (trimmedLine && !trimmedLine.startsWith('#')) {
+            const [key, ...valueParts] = trimmedLine.split('=');
+            const value = valueParts.join('=');
+            if (key && value && !process.env[key]) {
+                process.env[key] = value;
+            }
+        }
+    });
+}
+
 console.log('🚀 Starting Professional Weather Dashboard build process...');
 console.log('📊 Environment check:', process.env.OPENWEATHER_API_KEY ? 'API key found' : 'API key not found');
 
@@ -55,9 +73,9 @@ try {
     if (apiKey && apiKey !== 'YOUR_API_KEY_HERE') {
         console.log('🔑 Replacing API key placeholder with environment variable...');
         
-        // Replace in weather.js
+        // Replace only the API key in the CONFIG object, not in conditional checks
         const beforeReplaceWeather = weatherJsContent;
-        weatherJsContent = weatherJsContent.replace(/YOUR_API_KEY_HERE/g, apiKey);
+        weatherJsContent = weatherJsContent.replace(/API_KEY: 'YOUR_API_KEY_HERE'/, `API_KEY: '${apiKey}'`);
         
         // Replace in api-test.html
         const beforeReplaceTest = apiTestContent;

@@ -6,6 +6,8 @@
   "scripts": {
     "build": "node build.js",
     "dev": "npx http-server . -p 3000 -o",
+    "dev:env": "npm run build && npx http-server dist -p 3003 -o",
+    "serve:dist": "npx http-server dist -p 3003 -o",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
