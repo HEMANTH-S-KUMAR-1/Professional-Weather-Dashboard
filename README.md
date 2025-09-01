@@ -1,6 +1,8 @@
 
 # Professional Weather Dashboard
 
+🌤️ **Live Demo:** Your site will be available at your Cloudflare Pages URL after deployment.
+
 ## Deploying to Cloudflare Pages
 
 This project is ready for static hosting on Cloudflare Pages. Follow these steps:

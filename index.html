@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard - Real-time Weather Information</title>
+    <meta name="description" content="Get real-time weather information for any city worldwide with our modern weather dashboard.">
+    
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://api.openweathermap.org">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23667eea'><path d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'/></svg>">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="weather.css">
+</head>
+<body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
+    
+    <div class="container">
+        <!-- Header Section -->
+        <header role="banner">
+            <div class="header-content">
+                <h1 class="main-title">
+                    <span class="weather-icon" aria-hidden="true">🌤️</span>
+                    Weather Dashboard
+                </h1>
+                <p class="subtitle">Get real-time weather information for any city worldwide</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main id="main" role="main">
+            <!-- Search Section -->
+            <section class="search-section" aria-labelledby="search-heading">
+                <h2 id="search-heading" class="visually-hidden">Search for weather</h2>
+                <div class="search-container">
+                    <form class="search-form" role="search" aria-label="Weather search">
+                        <div class="input-group">
+                            <label for="cityInput" class="visually-hidden">Enter city name</label>
+                            <input 
+                                type="text" 
+                                id="cityInput" 
+                                name="city"
+                                placeholder="Enter city name (e.g., London, New York)"
+                                autocomplete="address-level2"
+                                spellcheck="false"
+                                aria-describedby="search-hint"
+                                required
+                            >
+                            <div id="search-hint" class="search-hint">
+                                Press Enter or click the button to search
+                            </div>
+                        </div>
+                        <button 
+                            type="submit" 
+                            id="searchBtn" 
+                            class="search-btn"
+                            aria-describedby="search-btn-hint"
+                        >
+                            <span class="btn-text">Get Weather</span>
+                            <span class="btn-icon" aria-hidden="true">🔍</span>
+                        </button>
+                    </form>
+                    
+                    <!-- Quick Search Suggestions -->
+                    <div class="quick-search" aria-label="Popular cities">
+                        <span class="quick-search-label">Popular cities:</span>
+                        <div class="quick-search-buttons">
+                            <button type="button" class="quick-btn" data-city="London">London</button>
+                            <button type="button" class="quick-btn" data-city="New York">New York</button>
+                            <button type="button" class="quick-btn" data-city="Tokyo">Tokyo</button>
+                            <button type="button" class="quick-btn" data-city="Paris">Paris</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Status Messages -->
+            <div class="status-messages" aria-live="polite" aria-atomic="true">
+                <div class="loading" id="loading" role="status">
+                    <div class="loading-spinner" aria-hidden="true"></div>
+                    <span class="loading-text">Fetching weather data...</span>
+                </div>
+
+                <div class="error-message" id="errorMessage" role="alert"></div>
+            </div>
+
+            <!-- Weather Display Section -->
+            <section class="weather-section" aria-labelledby="weather-heading">
+                <div class="weather-display" id="weatherDisplay">
+                    <header class="weather-header">
+                        <h2 id="cityName" class="city-name"></h2>
+                        <div class="weather-meta">
+                            <time id="lastUpdated" class="last-updated"></time>
+                        </div>
+                    </header>
+                    
+                    <!-- Main Weather Info -->
+                    <div class="weather-main">
+                        <div class="temperature-display">
+                            <span class="temperature-value" id="temperature">--°C</span>
+                            <div class="temperature-details">
+                                <span class="feels-like">Feels like <span id="feelsLike">--°C</span></span>
+                            </div>
+                        </div>
+                        
+                        <div class="weather-description">
+                            <div class="weather-icon-large" id="weatherIcon" aria-hidden="true">☀️</div>
+                            <p class="description-text" id="description">--</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Weather Info -->
+                    <div class="weather-details">
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-icon" aria-hidden="true">💧</span>
+                                <div class="detail-content">
+                                    <span class="detail-label">Humidity</span>
+                                    <span class="detail-value" id="humidity">--%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <span class="detail-icon" aria-hidden="true">👁️</span>
+                                <div class="detail-content">
+                                    <span class="detail-label">Visibility</span>
+                                    <span class="detail-value" id="visibility">-- km</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <span class="detail-icon" aria-hidden="true">🌪️</span>
+                                <div class="detail-content">
+                                    <span class="detail-label">Wind Speed</span>
+                                    <span class="detail-value" id="windSpeed">-- km/h</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-item">
+                                <span class="detail-icon" aria-hidden="true">🧭</span>
+                                <div class="detail-content">
+                                    <span class="detail-label">Pressure</span>
+                                    <span class="detail-value" id="pressure">-- hPa</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="weather-actions">
+                        <button type="button" id="refreshBtn" class="action-btn secondary" aria-label="Refresh weather data">
+                            <span class="btn-icon" aria-hidden="true">🔄</span>
+                            <span class="btn-text">Refresh</span>
+                        </button>
+                        <button type="button" id="shareBtn" class="action-btn secondary" aria-label="Share weather information">
+                            <span class="btn-icon" aria-hidden="true">📤</span>
+                            <span class="btn-text">Share</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer role="contentinfo" class="footer">
+            <div class="footer-content">
+                <p class="footer-text">
+                    Powered by <a href="https://openweathermap.org" target="_blank" rel="noopener noreferrer" class="footer-link">OpenWeatherMap</a>
+                </p>
+                <p class="footer-note">
+                    Weather data updates every 10 minutes
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="weather.js"></script>
+</body>
+</html>
