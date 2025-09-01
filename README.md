@@ -3,21 +3,33 @@
 
 🌤️ **Live Demo:** Your site will be available at your Cloudflare Pages URL after deployment.
 
-## Deploying to Cloudflare Pages
+## Deploying to Cloudflare Pages (Secure Method)
 
-This project is ready for static hosting on Cloudflare Pages. Follow these steps:
+This project uses environment variables to keep your API key secure:
 
+### Step 1: Deploy to Cloudflare Pages
 1. **Fork or clone this repository.**
 2. **Go to [Cloudflare Pages](https://pages.cloudflare.com/) and create a new project.**
 3. **Connect your GitHub repository.**
 4. **Set build settings:**
    - Framework preset: None
-   - Build command: (leave blank)
+   - Build command: `chmod +x build.sh && ./build.sh`
    - Output directory: `./`
-5. **API Key Setup:**
-   - **For deployment**: Edit `weather.js` and replace `YOUR_API_KEY_HERE` with your actual OpenWeatherMap API key
-   - **Important**: Do not commit your real API key to the repository
-   - Get your free API key at: https://openweathermap.org/api
+
+### Step 2: Add Environment Variables (SECURE)
+1. **In your Cloudflare Pages project settings:**
+   - Go to "Settings" → "Environment Variables"
+   - Click "Add variable"
+   - Name: `OPENWEATHER_API_KEY`
+   - Value: Your actual API key from https://openweathermap.org/api
+   - Click "Save"
+
+2. **Redeploy your project** to apply the environment variable
+
+### Step 3: Your API Key is Now Secure! 🔒
+- ✅ API key is stored securely in Cloudflare
+- ✅ Not visible in your code or GitHub repository
+- ✅ Automatically injected during build process
 
 ## Local Development
 
