@@ -48,12 +48,22 @@ try {
 
     let weatherJsContent = fs.readFileSync(weatherJsPath, 'utf8');
     
+    // Also handle api-test.html with API key replacement
+    const apiTestPath = path.join(distDir, 'api-test.html');
+    let apiTestContent = fs.readFileSync(apiTestPath, 'utf8');
+    
     if (apiKey && apiKey !== 'YOUR_API_KEY_HERE') {
         console.log('🔑 Replacing API key placeholder with environment variable...');
-        const beforeReplace = weatherJsContent;
+        
+        // Replace in weather.js
+        const beforeReplaceWeather = weatherJsContent;
         weatherJsContent = weatherJsContent.replace(/YOUR_API_KEY_HERE/g, apiKey);
         
-        if (beforeReplace === weatherJsContent) {
+        // Replace in api-test.html
+        const beforeReplaceTest = apiTestContent;
+        apiTestContent = apiTestContent.replace(/YOUR_API_KEY_HERE/g, apiKey);
+        
+        if (beforeReplaceWeather === weatherJsContent && beforeReplaceTest === apiTestContent) {
             console.warn('⚠️  Warning: No API key placeholder found to replace');
         } else {
             console.log('✅ API key replacement completed successfully');
@@ -64,9 +74,11 @@ try {
         console.log('   Please set the OPENWEATHER_API_KEY environment variable in Cloudflare Pages.');
     }
     
-    // Write weather.js to dist
+    // Write files to dist
     fs.writeFileSync(weatherJsDistPath, weatherJsContent, 'utf8');
+    fs.writeFileSync(apiTestPath, apiTestContent, 'utf8');
     console.log('📄 Created weather.js in dist/ with API key configuration');
+    console.log('📄 Updated api-test.html with API key configuration');
     
     // Verify dist directory contents
     const distFiles = fs.readdirSync(distDir);

@@ -225,14 +225,25 @@ class WeatherApp {
   async makeAPIRequest(city) {
     const url = `${CONFIG.API_BASE_URL}?q=${encodeURIComponent(city)}&appid=${CONFIG.API_KEY}&units=metric`;
     
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-      // Add timeout
-      signal: AbortSignal.timeout(10000) // 10 seconds
-    });
+    // Create timeout controller for older browsers
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 seconds
+    
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      return response;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      throw error;
+    }
   }
 
   getErrorMessage(status, data) {
