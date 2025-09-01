@@ -1,0 +1,41 @@
+{
+  "name": "professional-weather-dashboard",
+  "version": "1.0.0",
+  "description": "A modern, professional weather dashboard with real-time weather data and responsive design",
+  "main": "index.html",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "npx http-server . -p 3000 -o",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HEMANTH-S-KUMAR-1/Professional-Weather-Dashboard.git"
+  },
+  "keywords": [
+    "weather",
+    "dashboard",
+    "javascript",
+    "responsive",
+    "api",
+    "openweathermap",
+    "cloudflare-pages"
+  ],
+  "author": "HEMANTH S KUMAR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HEMANTH-S-KUMAR-1/Professional-Weather-Dashboard/issues"
+  },
+  "homepage": "https://github.com/HEMANTH-S-KUMAR-1/Professional-Weather-Dashboard#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

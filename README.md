@@ -13,8 +13,8 @@ This project uses environment variables to keep your API key secure:
 3. **Connect your GitHub repository.**
 4. **Set build settings:**
    - Framework preset: None
-   - Build command: `chmod +x build.sh && ./build.sh`
-   - Output directory: `./`
+   - Build command: `node build.js`
+   - Output directory: `dist`
 
 ### Step 2: Add Environment Variables (SECURE)
 1. **In your Cloudflare Pages project settings:**
@@ -44,7 +44,8 @@ This project uses environment variables to keep your API key secure:
    - Or see `ENV_SETUP.md` for environment variable options
 
 3. **Open the project:**
-   - Open `weather.html` in your web browser
+   - Open `index.html` in your web browser
+   - Or use a local server: `npm run dev` (requires npm install first)
 
 ## Security Warning
 - Never commit your real API key to a public repository

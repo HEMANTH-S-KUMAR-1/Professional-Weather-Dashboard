@@ -5,7 +5,7 @@
 ### 1. Cloudflare Pages Configuration
 - **Framework preset:** None
 - **Build command:** `node build.js`
-- **Output directory:** `./`
+- **Output directory:** `dist`
 - **Node.js version:** Default (18.x or later recommended)
 
 ### 2. Environment Variables (CRITICAL)
