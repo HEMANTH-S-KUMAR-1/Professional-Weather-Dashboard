@@ -22,7 +22,7 @@ try {
     console.log('📁 Created clean dist directory');
 
     // Files to copy to dist
-    const filesToCopy = ['index.html', 'weather.css'];
+    const filesToCopy = ['index.html', 'weather.css', 'api-test.html'];
     
     // Copy static files to dist
     filesToCopy.forEach(file => {

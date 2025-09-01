@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Key Test - Weather Dashboard</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .success { background: rgba(76, 175, 80, 0.2); border: 1px solid #4CAF50; }
+        .error { background: rgba(244, 67, 54, 0.2); border: 1px solid #f44336; }
+        .warning { background: rgba(255, 193, 7, 0.2); border: 1px solid #FFC107; }
+        button {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover { background: rgba(255,255,255,0.3); }
+        pre { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 5px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Weather Dashboard - API Key Test</h1>
+    <p>This page helps verify if your API key is properly configured in the deployment.</p>
+    
+    <div id="status"></div>
+    
+    <button onclick="testAPI()">🧪 Test API Key</button>
+    <button onclick="testDemo()">📝 Show Demo Data</button>
+    
+    <div id="result"></div>
+
+    <script>
+        // Get the same config as main app
+        const CONFIG = {
+            API_KEY: 'YOUR_API_KEY_HERE',
+            API_BASE_URL: 'https://api.openweathermap.org/data/2.5/weather'
+        };
+
+        function showStatus(message, type) {
+            document.getElementById('status').innerHTML = `<div class="${type}">${message}</div>`;
+        }
+
+        function showResult(content) {
+            document.getElementById('result').innerHTML = content;
+        }
+
+        // Check API key status on load
+        window.onload = function() {
+            const apiKey = CONFIG.API_KEY;
+            
+            if (apiKey === 'YOUR_API_KEY_HERE') {
+                showStatus('⚠️ API Key Status: PLACEHOLDER DETECTED - This means you are viewing the source version. In Cloudflare Pages deployment, this will be replaced with your real API key.', 'warning');
+            } else if (apiKey && apiKey.length === 32) {
+                showStatus('✅ API Key Status: CONFIGURED - Real API key detected! Length: ' + apiKey.length + ' characters', 'success');
+            } else {
+                showStatus('❌ API Key Status: INVALID - API key format is incorrect', 'error');
+            }
+        };
+
+        async function testAPI() {
+            const apiKey = CONFIG.API_KEY;
+            
+            if (apiKey === 'YOUR_API_KEY_HERE') {
+                showResult(`
+                    <h3>🧪 Test Results:</h3>
+                    <div class="warning">
+                        <strong>Local/Source Version Detected</strong><br>
+                        This is normal if you're testing locally or viewing source files.<br>
+                        ✅ In Cloudflare Pages deployment, the API key will be automatically injected.
+                    </div>
+                `);
+                return;
+            }
+
+            showResult('<div>🔄 Testing API connection...</div>');
+            
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}?q=London&appid=${apiKey}&units=metric`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult(`
+                        <h3>✅ API Test Successful!</h3>
+                        <div class="success">
+                            <strong>Connection Status:</strong> Working<br>
+                            <strong>Test City:</strong> ${data.name}, ${data.sys.country}<br>
+                            <strong>Temperature:</strong> ${Math.round(data.main.temp)}°C<br>
+                            <strong>Weather:</strong> ${data.weather[0].description}
+                        </div>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `);
+                } else {
+                    showResult(`
+                        <h3>❌ API Test Failed</h3>
+                        <div class="error">
+                            <strong>Error:</strong> ${data.message || 'Unknown error'}<br>
+                            <strong>Status:</strong> ${response.status}
+                        </div>
+                    `);
+                }
+            } catch (error) {
+                showResult(`
+                    <h3>❌ Connection Failed</h3>
+                    <div class="error">
+                        <strong>Error:</strong> ${error.message}
+                    </div>
+                `);
+            }
+        }
+
+        function testDemo() {
+            showResult(`
+                <h3>📝 Demo Data Test</h3>
+                <div class="success">
+                    <strong>Demo City:</strong> Demo City, DC<br>
+                    <strong>Temperature:</strong> 22°C<br>
+                    <strong>Weather:</strong> Partly cloudy<br>
+                    <strong>Humidity:</strong> 65%
+                </div>
+                <p>This shows the fallback demo data that users see when no API key is configured.</p>
+            `);
+        }
+    </script>
+</body>
+</html>
