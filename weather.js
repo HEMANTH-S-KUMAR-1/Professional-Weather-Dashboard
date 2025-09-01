@@ -5,7 +5,8 @@
 
 // ===== CONFIGURATION =====
 const CONFIG = {
-  // Replace with your OpenWeatherMap API key
+  // IMPORTANT: Add your OpenWeatherMap API key below after deploying to Cloudflare Pages.
+  // Never commit your real API key to a public repository.
   API_KEY: 'YOUR_API_KEY_HERE',
   API_BASE_URL: 'https://api.openweathermap.org/data/2.5/weather',
   CACHE_DURATION: 10 * 60 * 1000, // 10 minutes in milliseconds

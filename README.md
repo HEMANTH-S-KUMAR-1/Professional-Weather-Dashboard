@@ -1,39 +1,30 @@
+
 # Professional Weather Dashboard
 
-A modern, professional-grade weather dashboard that provides real-time weather information for any city worldwide. Built with HTML, CSS, and JavaScript, this dashboard features a clean UI, accessibility enhancements, and integration with the OpenWeatherMap API.
+## Deploying to Cloudflare Pages
 
-## Features
-- Real-time weather data for any city
-- Quick search for popular cities (auto-updates every hour)
-- Responsive and accessible design
-- Weather details: temperature, humidity, wind speed, pressure, visibility, and more
-- Caching for faster repeat searches
-- Share and refresh weather data
-- Error handling and user-friendly messages
+This project is ready for static hosting on Cloudflare Pages. Follow these steps:
 
-The ‘Popular cities’ quick search buttons now update automatically every hour with a new set of cities, providing a fresh selection for users without reloading the page.
+1. **Fork or clone this repository.**
+2. **Go to [Cloudflare Pages](https://pages.cloudflare.com/) and create a new project.**
+3. **Connect your GitHub repository.**
+4. **Set build settings:**
+   - Framework preset: None
+   - Build command: (leave blank)
+   - Output directory: `./`
+5. **API Key Setup:**
+   - The file `weather.js` uses a placeholder for the OpenWeatherMap API key.
+   - After deployment, edit the file in Cloudflare Pages or locally and replace `YOUR_API_KEY_HERE` with your actual API key.
+   - **Do not commit your API key to the repository.**
 
-## Setup & Usage
-1. **Clone the repository:**
-   ```sh
-   git clone https://github.com/HEMANTH-S-KUMAR-1/Weather-Dashboard.git
-   cd Weather-Dashboard
-   ```
-2. **Open the project:**
-   - Open `weather.html` in your web browser.
+## Security Warning
+- Never upload your real API key to a public repository.
+- For advanced security, use Cloudflare Workers to proxy API requests and keep your key secret.
 
-3. **API Key:**
-   - The app uses the [OpenWeatherMap API](https://openweathermap.org/api). Your API key is already set in `weather.js`.
-   - If you wish to use your own key, replace the value of `API_KEY` in `weather.js`.
+## Usage
+- Open the deployed site and enter a city name to get weather data.
+- If no API key is set, demo data will be shown.
 
-## File Structure
-- `weather.html` — Main HTML file
-- `weather.css` — Stylesheet
-- `weather.js` — JavaScript logic
+---
 
-## Credits
-- Weather data powered by [OpenWeatherMap](https://openweathermap.org)
-- Icons and UI inspired by modern design best practices
-
-## License
-This project is for educational and personal use. Please credit the author if you use or modify this dashboard.
+For questions or help, see the comments in `weather.js` or contact the maintainer.
