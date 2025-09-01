@@ -9,8 +9,7 @@ echo "Starting build process..."
 if [ -n "$OPENWEATHER_API_KEY" ]; then
     echo "Replacing API key placeholder with environment variable..."
     sed -i "s/YOUR_API_KEY_HERE/$OPENWEATHER_API_KEY/g" weather.js
-    sed -i "s/YOUR_API_KEY_HERE/$OPENWEATHER_API_KEY/g" index.html 2>/dev/null || true
-    echo "API key replacement completed."
+    echo "API key replacement completed in weather.js"
 else
     echo "Warning: OPENWEATHER_API_KEY environment variable not set. Using placeholder."
 fi
