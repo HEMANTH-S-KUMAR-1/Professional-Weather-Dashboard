@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Troubleshooting Guide</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #2563eb;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #2563eb;
+      margin-top: 30px;
+    }
+    h3 {
+      color: #4b5563;
+    }
+    pre, code {
+      background: #f1f5f9;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: monospace;
+      font-size: 0.9em;
+    }
+    pre {
+      padding: 15px;
+      overflow-x: auto;
+    }
+    .card {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .error-card {
+      border-left: 4px solid #dc2626;
+    }
+    .solution-card {
+      border-left: 4px solid #16a34a;
+    }
+    .troubleshooting-card {
+      border-left: 4px solid #f59e0b;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #e5e7eb;
+      text-align: left;
+    }
+    th {
+      background-color: #f1f5f9;
+    }
+    .step {
+      margin-bottom: 20px;
+      padding-left: 20px;
+      border-left: 2px solid #e5e7eb;
+    }
+    .step-number {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      background-color: #2563eb;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 25px;
+      margin-right: 10px;
+    }
+    .error-code {
+      display: inline-block;
+      padding: 3px 8px;
+      background-color: #fee2e2;
+      color: #dc2626;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .success-code {
+      display: inline-block;
+      padding: 3px 8px;
+      background-color: #dcfce7;
+      color: #16a34a;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>OpenWeatherMap API Troubleshooting Guide</h1>
+  
+  <div class="card">
+    <h2>Common API Errors & Solutions</h2>
+    
+    <div class="error-card card">
+      <h3><span class="error-code">401</span> Unauthorized</h3>
+      <p><strong>Error message:</strong> "Invalid API key" or "Unauthorized"</p>
+      <p><strong>Cause:</strong> Your API key is missing, invalid, or not activated yet.</p>
+      <p><strong>Solution:</strong></p>
+      <ul>
+        <li>Verify that you've set the <code>OWM_API_KEY</code> environment variable in Cloudflare Pages</li>
+        <li>Check that your API key is correctly copied from the OpenWeatherMap website</li>
+        <li>New API keys may take up to 2 hours to activate - wait and try again</li>
+        <li>Try generating a new API key in your OpenWeatherMap account</li>
+      </ul>
+    </div>
+    
+    <div class="error-card card">
+      <h3><span class="error-code">404</span> Not Found</h3>
+      <p><strong>Error message:</strong> "Not found" or "Invalid endpoint"</p>
+      <p><strong>Cause:</strong> You're trying to access an endpoint that doesn't exist or using incorrect parameters.</p>
+      <p><strong>Solution:</strong></p>
+      <ul>
+        <li>Check that the API endpoint URL is correct</li>
+        <li>Verify that all required parameters are included</li>
+        <li>For geocoding requests, ensure city names are correctly formatted and URL encoded</li>
+      </ul>
+    </div>
+    
+    <div class="error-card card">
+      <h3><span class="error-code">429</span> Too Many Requests</h3>
+      <p><strong>Error message:</strong> "Too many requests" or "Quota exceeded"</p>
+      <p><strong>Cause:</strong> You've exceeded your API call limits.</p>
+      <p><strong>Solution:</strong></p>
+      <ul>
+        <li>Free accounts are limited to 60 calls per minute and 1,000,000 calls per month</li>
+        <li>Implement caching in your application to reduce API calls</li>
+        <li>Consider upgrading to a paid plan if you need more requests</li>
+      </ul>
+    </div>
+    
+    <div class="error-card card">
+      <h3><span class="error-code">500/502/503</span> Server Errors</h3>
+      <p><strong>Error message:</strong> "Internal server error" or "Bad gateway"</p>
+      <p><strong>Cause:</strong> Issues with the OpenWeatherMap API servers or Cloudflare Functions.</p>
+      <p><strong>Solution:</strong></p>
+      <ul>
+        <li>These are typically temporary - wait and try again later</li>
+        <li>Check OpenWeatherMap's status page or Twitter for any announced outages</li>
+        <li>Try using the Direct API test tool to see if it's a Cloudflare Functions issue</li>
+      </ul>
+    </div>
+    
+    <div class="error-card card">
+      <h3><span class="error-code">JSON Parse Error</span></h3>
+      <p><strong>Error message:</strong> "Invalid JSON" or "Unexpected token"</p>
+      <p><strong>Cause:</strong> The API response couldn't be parsed as valid JSON.</p>
+      <p><strong>Solution:</strong></p>
+      <ul>
+        <li>This often happens when the API returns an HTML error page instead of JSON</li>
+        <li>Use the diagnostic tools to check the raw response from the API</li>
+        <li>Verify your API key and parameters are correct</li>
+        <li>Check if there are network issues or proxies interfering with the response</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="solution-card card">
+    <h2>API Key Configuration Guide</h2>
+    
+    <h3>Setting up your OpenWeatherMap API Key:</h3>
+    <div class="step">
+      <p><span class="step-number">1</span> <strong>Create an account on OpenWeatherMap</strong> if you don't have one already:<br>
+      <a href="https://home.openweathermap.org/users/sign_up" target="_blank">https://home.openweathermap.org/users/sign_up</a></p>
+    </div>
+    
+    <div class="step">
+      <p><span class="step-number">2</span> <strong>Generate an API key</strong> in your account:<br>
+      - Go to your OpenWeatherMap account<br>
+      - Navigate to "API keys" tab<br>
+      - Generate a new API key (if needed)<br>
+      - Wait up to 2 hours for the key to activate (for new accounts)</p>
+    </div>
+    
+    <div class="step">
+      <p><span class="step-number">3</span> <strong>Add the API key to Cloudflare Pages:</strong><br>
+      - Log in to your Cloudflare dashboard<br>
+      - Go to Pages > your project<br>
+      - Navigate to "Settings" > "Environment variables"<br>
+      - Add a new variable with the name <code>OWM_API_KEY</code><br>
+      - Paste your API key as the value<br>
+      - Make sure to add it to both Production and Preview environments</p>
+    </div>
+    
+    <div class="step">
+      <p><span class="step-number">4</span> <strong>Trigger a new deployment</strong> for the changes to take effect:<br>
+      - Go to the "Deployments" tab in Cloudflare Pages<br>
+      - Click "Retry deployment" on your latest deployment<br>
+      - Or make a small change to your code and push to GitHub</p>
+    </div>
+    
+    <div class="step">
+      <p><span class="step-number">5</span> <strong>Verify your API key</strong> using the diagnostic tools:<br>
+      - After deployment, visit the <code>/diagnostics</code> page<br>
+      - Run the API tests to confirm your key is working<br>
+      - Check for any specific error messages</p>
+    </div>
+  </div>
+  
+  <div class="troubleshooting-card card">
+    <h2>Step-by-Step Troubleshooting Process</h2>
+    
+    <h3>When your API isn't working:</h3>
+    
+    <table>
+      <tr>
+        <th>Step</th>
+        <th>Action</th>
+        <th>What to Check</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Verify API Key</td>
+        <td>
+          - Visit <code>/api-test</code> to check if your API key is valid<br>
+          - Look for a <span class="success-code">200</span> response and valid data
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Check Environment Variables</td>
+        <td>
+          - Visit <code>/diagnostics</code> to see if environment variables are detected<br>
+          - Verify <code>OWM_API_KEY</code> is present and has the correct length
+        </td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Test Direct API Access</td>
+        <td>
+          - Visit <code>/direct-test</code> to test direct API calls<br>
+          - This bypasses your proxy to isolate if the issue is with OpenWeatherMap or your code
+        </td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>Run Detailed API Tests</td>
+        <td>
+          - Visit <code>/api-test-detailed</code> for comprehensive tests<br>
+          - Check for specific error codes or messages
+        </td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>Check Browser Console</td>
+        <td>
+          - Open your browser's developer tools (F12)<br>
+          - Look for any CORS errors or network issues
+        </td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Try a Different Browser</td>
+        <td>
+          - Test in Chrome, Firefox, or Edge<br>
+          - Rule out browser-specific issues
+        </td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Redeploy Your Application</td>
+        <td>
+          - Trigger a new deployment in Cloudflare Pages<br>
+          - Ensure environment changes are applied
+        </td>
+      </tr>
+    </table>
+  </div>
+  
+  <div class="card">
+    <h2>OpenWeatherMap API Reference</h2>
+    
+    <h3>API Endpoints Used by This Application:</h3>
+    
+    <table>
+      <tr>
+        <th>Endpoint</th>
+        <th>Purpose</th>
+        <th>Required Parameters</th>
+      </tr>
+      <tr>
+        <td><code>/data/2.5/weather</code></td>
+        <td>Current weather data</td>
+        <td><code>lat</code>, <code>lon</code>, <code>appid</code></td>
+      </tr>
+      <tr>
+        <td><code>/data/2.5/forecast</code></td>
+        <td>5-day weather forecast</td>
+        <td><code>lat</code>, <code>lon</code>, <code>appid</code></td>
+      </tr>
+      <tr>
+        <td><code>/data/2.5/air_pollution</code></td>
+        <td>Air quality data</td>
+        <td><code>lat</code>, <code>lon</code>, <code>appid</code></td>
+      </tr>
+      <tr>
+        <td><code>/geo/1.0/direct</code></td>
+        <td>Geocoding (city search)</td>
+        <td><code>q</code>, <code>limit</code>, <code>appid</code></td>
+      </tr>
+    </table>
+    
+    <h3>API Documentation Links:</h3>
+    <ul>
+      <li><a href="https://openweathermap.org/current" target="_blank">Current Weather API</a></li>
+      <li><a href="https://openweathermap.org/forecast5" target="_blank">5-day Forecast API</a></li>
+      <li><a href="https://openweathermap.org/api/air-pollution" target="_blank">Air Pollution API</a></li>
+      <li><a href="https://openweathermap.org/api/geocoding-api" target="_blank">Geocoding API</a></li>
+    </ul>
+  </div>
+  
+  <footer style="margin-top: 40px; text-align: center; color: #6b7280; font-size: 0.9em;">
+    <p>Professional Weather Dashboard API Troubleshooting Guide</p>
+    <p><a href="/diagnostics">Return to Diagnostics Home</a></p>
+  </footer>
+</body>
+</html>

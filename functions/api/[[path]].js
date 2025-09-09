@@ -122,13 +122,65 @@ export async function onRequest(context) {
     let data;
     try {
       const responseText = await response.text();
-      data = JSON.parse(responseText);
+      
+      // Log the first part of the response for debugging
+      console.log(`OpenWeatherMap API Response (first 100 chars): ${responseText.substring(0, 100)}`);
+      
+      // Check if response looks like JSON
+      if (!responseText.trim().startsWith('{') && !responseText.trim().startsWith('[')) {
+        console.error('Response does not appear to be JSON', responseText.substring(0, 200));
+        return new Response(JSON.stringify({ 
+          error: 'Invalid response format from OpenWeatherMap', 
+          message: 'Response did not contain valid JSON',
+          hint: "Check if your API key is valid and has the necessary permissions"
+        }), {
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+      }
+      
+      // Try to parse the JSON
+      try {
+        data = JSON.parse(responseText);
+      } catch (jsonError) {
+        console.error('JSON parse error:', jsonError, 'Response:', responseText.substring(0, 200));
+        return new Response(JSON.stringify({ 
+          error: 'Invalid JSON from OpenWeatherMap', 
+          message: 'Could not parse the API response as JSON',
+          details: jsonError.message
+        }), {
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+      }
+      
+      // Check if the parsed data indicates an error from OpenWeatherMap
+      if (data.cod && data.cod !== 200 && data.cod !== '200') {
+        console.error('OpenWeatherMap API returned error:', data);
+        return new Response(JSON.stringify({
+          error: 'OpenWeatherMap API Error',
+          message: data.message || 'Unknown error from weather API',
+          code: data.cod
+        }), {
+          status: data.cod === 401 ? 401 : 500,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+      }
     } catch (error) {
-      console.error('Failed to parse OpenWeatherMap response as JSON', error);
+      console.error('General error processing API response:', error);
       return new Response(JSON.stringify({ 
-        error: 'Invalid response from OpenWeatherMap', 
-        message: 'Failed to parse response as JSON',
-        details: "The response from OpenWeatherMap was not valid JSON"
+        error: 'Error processing weather data', 
+        message: error.message || 'An unexpected error occurred',
+        details: "There was a problem with the OpenWeatherMap API response"
       }), {
         status: 500,
         headers: {

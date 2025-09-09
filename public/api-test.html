@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Dashboard API Test</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #2563eb;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 0;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    pre {
+      background: #f1f5f9;
+      padding: 15px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    .success {
+      color: #16a34a;
+    }
+    .error {
+      color: #dc2626;
+    }
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Weather Dashboard API Test</h1>
+  <p>Use this page to test if your OpenWeatherMap API configuration is working correctly.</p>
+  
+  <div class="card">
+    <h2>API Key Validation</h2>
+    <p>Click the button below to test if your API key is configured correctly:</p>
+    <button id="testApiKey">Test API Key</button>
+    <div id="apiKeyResult"></div>
+  </div>
+  
+  <div class="card">
+    <h2>Weather API Test</h2>
+    <p>Test fetching weather data for a specific location:</p>
+    <button id="testWeather">Test Weather API</button>
+    <div id="weatherResult"></div>
+  </div>
+  
+  <div class="card">
+    <h2>Geocoding API Test</h2>
+    <p>Test searching for a city:</p>
+    <button id="testGeocoding">Test Geocoding API</button>
+    <div id="geocodingResult"></div>
+  </div>
+
+  <script>
+    document.getElementById('testApiKey').addEventListener('click', async () => {
+      const resultDiv = document.getElementById('apiKeyResult');
+      resultDiv.innerHTML = 'Testing API key...';
+      
+      try {
+        const response = await fetch('/api-test');
+        const data = await response.json();
+        
+        if (data.success) {
+          resultDiv.innerHTML = `
+            <h3 class="success">✅ API Key is valid!</h3>
+            <p>Successfully connected to OpenWeatherMap API.</p>
+            <p>API Key prefix: ${data.apiKeyPrefix}</p>
+            <p>API Key length: ${data.apiKeyLength} characters</p>
+            <p>Test location: ${data.data.city}, ${data.data.country}</p>
+            <p>Current weather: ${data.data.weather} (${data.data.description})</p>
+          `;
+        } else {
+          resultDiv.innerHTML = `
+            <h3 class="error">❌ API Key test failed</h3>
+            <p>Error: ${data.error || 'Unknown error'}</p>
+            <p>${data.message || ''}</p>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = `
+          <h3 class="error">❌ API Test Error</h3>
+          <p>Error: ${error.message}</p>
+          <p>This might indicate that the API endpoint is not accessible or there's a network issue.</p>
+        `;
+      }
+    });
+    
+    document.getElementById('testWeather').addEventListener('click', async () => {
+      const resultDiv = document.getElementById('weatherResult');
+      resultDiv.innerHTML = 'Testing weather API...';
+      
+      try {
+        // Test with New York coordinates
+        const response = await fetch('/api/weather/current?lat=40.7128&lon=-74.006');
+        const responseText = await response.text();
+        
+        try {
+          const data = JSON.parse(responseText);
+          resultDiv.innerHTML = `
+            <h3 class="success">✅ Weather API working</h3>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        } catch (e) {
+          resultDiv.innerHTML = `
+            <h3 class="error">❌ Invalid JSON response</h3>
+            <p>Could not parse the API response as JSON.</p>
+            <p>Response text (first 200 chars):</p>
+            <pre>${responseText.substring(0, 200)}...</pre>
+          `;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = `
+          <h3 class="error">❌ Weather API Error</h3>
+          <p>Error: ${error.message}</p>
+        `;
+      }
+    });
+    
+    document.getElementById('testGeocoding').addEventListener('click', async () => {
+      const resultDiv = document.getElementById('geocodingResult');
+      resultDiv.innerHTML = 'Testing geocoding API...';
+      
+      try {
+        // Test with "London" search
+        const response = await fetch('/api/geocoding?q=London');
+        const responseText = await response.text();
+        
+        try {
+          const data = JSON.parse(responseText);
+          resultDiv.innerHTML = `
+            <h3 class="success">✅ Geocoding API working</h3>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        } catch (e) {
+          resultDiv.innerHTML = `
+            <h3 class="error">❌ Invalid JSON response</h3>
+            <p>Could not parse the API response as JSON.</p>
+            <p>Response text (first 200 chars):</p>
+            <pre>${responseText.substring(0, 200)}...</pre>
+          `;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = `
+          <h3 class="error">❌ Geocoding API Error</h3>
+          <p>Error: ${error.message}</p>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>

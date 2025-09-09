@@ -135,14 +135,28 @@ GET /api/health               # API health check
 
 ## 🚀 Deployment
 
-### Frontend (Vercel/Netlify)
+### Cloudflare Pages Deployment
+```bash
+# Build for Cloudflare Pages with Functions
+npm run build:cloudflare
+```
+
+1. **Setup Cloudflare Pages**: Connect your GitHub repository
+2. **Configure Build Settings**:
+   - Build command: `npm run build:cloudflare`
+   - Build output directory: `dist`
+3. **Set Environment Variables**:
+   - `OWM_API_KEY`: Your OpenWeatherMap API key
+   - `NODE_VERSION`: 18.0.0 (or higher)
+4. **Deploy**: Trigger a deploy from the Cloudflare dashboard
+
+### Traditional Frontend/Backend Deployment
 ```bash
 npm run build
 # Deploy the 'dist' folder
 ```
 
-### Backend (Railway/Render)
-1. Deploy the `backend` folder
+1. Deploy the `backend` folder to a Node.js host
 2. Set environment variables in your platform
 3. Update frontend API URLs to production backend
 
@@ -153,6 +167,28 @@ PORT=3000
 NODE_ENV=production
 ```
 
+## 🔧 Troubleshooting Tools
+
+When deployed to Cloudflare Pages, this project includes several diagnostic tools to help identify and fix API problems:
+
+### API Diagnostic Endpoints
+
+- **`/diagnostics`**: Main diagnostic dashboard with links to all testing tools
+- **`/api-test`**: Simple API key validation test
+- **`/api-test-detailed`**: Comprehensive tests of all API endpoints
+- **`/direct-test`**: Direct OpenWeatherMap API testing (bypasses proxy)
+- **`/url-builder`**: Tool to build and test different API URL combinations
+- **`/public/api-troubleshooting.html`**: Complete guide to common API errors and solutions
+
+### Common API Issues
+
+1. **Invalid API Key**: Check that your OWM_API_KEY is correctly set in Cloudflare environment variables
+2. **Rate Limiting**: Free tier is limited to 60 calls/minute and 1,000,000 calls/month
+3. **New API Key Activation**: New API keys may take up to 2 hours to activate
+4. **CORS Issues**: If testing locally, ensure your API proxy is handling CORS headers correctly
+
+See the API Troubleshooting Guide at `/public/api-troubleshooting.html` for detailed solutions to common problems.
+
 ## 🔧 Development
 
 ### Available Scripts
@@ -161,6 +197,7 @@ npm run dev          # Start both frontend and backend
 npm run dev:frontend # Start only frontend (Vite dev server)
 npm run dev:backend  # Start only backend (Express server)
 npm run build        # Build frontend for production
+npm run build:cloudflare # Build for Cloudflare Pages deployment
 npm run preview      # Preview production build locally
 npm run lint         # Run ESLint to check code quality
 ```
@@ -203,7 +240,8 @@ If you encounter any issues or have questions:
 
 1. Check the [Issues](https://github.com/yourusername/professional-weather-dashboard/issues) page
 2. Create a new issue with detailed information
-3. Join our community discussions
+3. Check the diagnostic tools at `/diagnostics` for API issues
+4. Join our community discussions
 
 ---
 
