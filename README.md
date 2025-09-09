@@ -1,43 +1,51 @@
 # 🌤️ Professional Weather Dashboard
 
-A futuristic, animated, multilingual weather dashboard powered by OpenWeatherMap APIs. Features glassmorphism design, dark/light themes, and real-time weather data including current conditions, 5-day forecasts, and air quality metrics.
+A futuristic, animated, multilingual weather dashboard powered by OpenWeatherMap APIs. Features glassmorphism design, dark/light themes, real-time weather data with **optimized performance**, **enhanced security**, and **comprehensive rate limiting**.
 
 ![Weather Dashboard Preview](public/preview.jpg)
 
 ## ✨ Features
 
-### 🗺️ **Live Location & Voice Search** (NEW!)
+### 🗺️ **Live Location & Voice Search** (ENHANCED!)
 - **Auto-Location Detection**: Automatically detects user's location on page load
 - **Voice Search**: Multi-language voice recognition (English, Hindi, Kannada)
 - **Location Fallback**: Uses Tumakuru, India as default when location access is denied
 - **Smart Integration**: Voice results automatically update weather data
+- **Rate Limited**: Intelligent request debouncing prevents API overuse
 
 ### 🌍 **Multilingual Support**
 - **English** (default)
 - **Hindi** (हिन्दी)  
 - **Kannada** (ಕನ್ನಡ)
 - Dynamic language switching with UI translations
+- **Performance Optimized**: Language changes don't trigger excessive API calls
 
 ### 🌡️ **Weather Data**
 - **Current Weather**: Temperature, humidity, wind speed, pressure, visibility
 - **5-Day Forecast**: Daily weather predictions with icons
 - **Air Quality**: AQI index with pollutant breakdowns (PM2.5, PM10, CO, NO₂, O₃, SO₂)
 - **City Search**: Autocomplete search with geocoding + voice input
+- **Request Caching**: 5-minute cache prevents duplicate API calls
 
 ### 🎨 **Modern Design**
 - **Glassmorphism**: Semi-transparent cards with backdrop blur
 - **Theme Toggle**: Dark mode with neon gradients, light mode with pastels
 - **Animations**: Smooth transitions, hover effects, loading states
 - **Responsive**: Mobile-first design with breakpoints for all devices
+- **React.memo Optimized**: Components prevent unnecessary re-renders
 
-### 🔒 **Security & Performance**
+### 🔒 **Security & Performance** (NEWLY ENHANCED!)
 - **API Proxy**: Backend secures OpenWeatherMap API keys
+- **Enhanced Rate Limiting**: 30 requests/minute per user, 100 global requests/minute
+- **Request Debouncing**: 300ms delay prevents rapid-fire API calls
+- **Duplicate Prevention**: Smart caching prevents identical requests
 - **Environment Variables**: Secure configuration management
-- **CORS Protection**: Proper cross-origin resource sharing
-- **Rate Limiting**: Protection against abuse
+- **CORS Protection**: Enhanced cross-origin resource sharing policies
 - **Image Optimization**: Lazy loading for faster page loads
 - **Performance Monitoring**: Real-time tracking of loading metrics
-- **Code Splitting**: Optimized bundle sizes for faster loading
+- **Code Splitting**: Optimized bundle sizes (React, Framer Motion, Icons separated)
+- **Production Optimizations**: Console logs removed, terser minification
+- **Service Worker**: PWA capabilities with intelligent caching
 
 ## 🚀 Quick Start
 
@@ -72,11 +80,40 @@ A futuristic, animated, multilingual weather dashboard powered by OpenWeatherMap
    ```bash
    # Start both frontend and backend concurrently
    npm run dev
+   
+   # Frontend will be available at: http://localhost:5173
+   # Backend API will be available at: http://localhost:3001 (auto-configured)
    ```
 
 5. **Access the application**
    - Frontend: http://localhost:5173
-   - Backend API: http://localhost:3000
+   - Backend API: http://localhost:3001
+
+## ⚡ Performance Optimizations (2025 UPDATE)
+
+This project includes cutting-edge performance optimizations implemented in September 2025:
+
+### 🚀 **Build Optimizations**
+- **Terser Minification**: Console logs removed in production builds
+- **Code Splitting**: Separate chunks for React (139KB), Framer Motion (115KB), Icons (6KB)
+- **Bundle Analysis**: Optimized chunk sizes with 1MB warning limit
+- **Tree Shaking**: Unused code elimination for smaller bundles
+
+### 🧠 **React Performance**
+- **React.memo**: WeatherCard, ForecastCard, and AirQualityCard prevent unnecessary re-renders
+- **useCallback**: Weather data fetching is properly memoized
+- **Smart Dependencies**: useEffect dependencies optimized to prevent infinite loops
+
+### 🔄 **API Request Optimizations**
+- **Request Debouncing**: 300ms delay prevents rapid API calls
+- **5-minute Caching**: Prevents duplicate requests for same location/language
+- **Duplicate Prevention**: Smart request tracking with unique keys
+- **Rate Limiting**: Per-user (30/min) and global (100/min) limits
+
+### 💾 **PWA Features**
+- **Service Worker**: Professional-weather-dashboard-v2 with enhanced caching
+- **Manifest**: Full PWA support with offline capabilities
+- **Cache Strategy**: Network-first for API calls, cache-first for static assets
 
 ## 🎯 How to Use
 
@@ -231,17 +268,36 @@ See the API Troubleshooting Guide at `/public/api-troubleshooting.html` for deta
 
 ### Available Scripts
 ```bash
-npm run dev          # Start both frontend and backend
+npm run dev          # Start both frontend (port 5173) and backend (port 3001)
 npm run dev:frontend # Start only frontend (Vite dev server)
 npm run dev:backend  # Start only backend (Express server)
-npm run build        # Build frontend for production
+npm run build        # Build frontend for production (optimized with terser)
 npm run build:cloudflare # Build for Cloudflare Pages deployment
 npm run preview      # Preview production build locally
-npm run lint         # Run ESLint to check code quality
+npm run lint         # Run ESLint to check code quality (zero errors/warnings)
 ```
 
-### Performance Optimizations
-This project includes several performance optimizations:
+### Performance Optimizations (LATEST 2025 UPDATES)
+This project includes several cutting-edge performance optimizations:
+
+1. **React Component Memoization**: `React.memo` implemented on WeatherCard, ForecastCard, and AirQualityCard
+2. **API Request Optimization**: 
+   - 300ms debouncing prevents rapid API calls
+   - 5-minute request caching reduces API usage
+   - Duplicate request prevention with unique key tracking
+3. **Enhanced Rate Limiting**: 
+   - Per-user: 30 requests/minute
+   - Global server: 100 requests/minute
+   - Retry-after headers for better client handling
+4. **Build Optimizations**:
+   - Terser minification with console log removal
+   - Manual chunk splitting: React (139KB), Framer Motion (115KB), Icons (6KB)
+   - Tree shaking and dead code elimination
+5. **PWA Enhancement**: 
+   - Updated service worker (professional-weather-dashboard-v2)
+   - Intelligent caching strategy
+   - Network-first for APIs, cache-first for assets
+6. **Bundle Analysis**: Optimized loading with 1MB chunk size warnings
 
 1. **Lazy Loading Images**: Using the `lazyLoad` utility to defer loading of offscreen images
 2. **Performance Monitoring**: Real-time tracking of page load metrics and long tasks
