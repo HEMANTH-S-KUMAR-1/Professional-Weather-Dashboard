@@ -6,6 +6,12 @@ A futuristic, animated, multilingual weather dashboard powered by OpenWeatherMap
 
 ## ✨ Features
 
+### 🗺️ **Live Location & Voice Search** (NEW!)
+- **Auto-Location Detection**: Automatically detects user's location on page load
+- **Voice Search**: Multi-language voice recognition (English, Hindi, Kannada)
+- **Location Fallback**: Uses Tumakuru, India as default when location access is denied
+- **Smart Integration**: Voice results automatically update weather data
+
 ### 🌍 **Multilingual Support**
 - **English** (default)
 - **Hindi** (हिन्दी)  
@@ -16,7 +22,7 @@ A futuristic, animated, multilingual weather dashboard powered by OpenWeatherMap
 - **Current Weather**: Temperature, humidity, wind speed, pressure, visibility
 - **5-Day Forecast**: Daily weather predictions with icons
 - **Air Quality**: AQI index with pollutant breakdowns (PM2.5, PM10, CO, NO₂, O₃, SO₂)
-- **City Search**: Autocomplete search with geocoding
+- **City Search**: Autocomplete search with geocoding + voice input
 
 ### 🎨 **Modern Design**
 - **Glassmorphism**: Semi-transparent cards with backdrop blur
@@ -72,6 +78,27 @@ A futuristic, animated, multilingual weather dashboard powered by OpenWeatherMap
    - Frontend: http://localhost:5173
    - Backend API: http://localhost:3000
 
+## 🎯 How to Use
+
+### Live Location Detection
+- **Automatic**: Weather data loads automatically for your current location on first visit
+- **Permission Required**: Grant location access when prompted for best experience
+- **Fallback**: If denied, defaults to Tumakuru, India weather data
+
+### Voice Search
+- **Activate**: Click the microphone button next to the search bar
+- **Speak**: Say the city name in English, Hindi, or Kannada
+- **Results**: Weather automatically updates with detected city
+- **Supported Languages**: 
+  - English: "New York", "London", "Tokyo"
+  - Hindi: "नई दिल्ली", "मुंबई", "बैंगलोर"
+  - Kannada: "ಬೆಂಗಳೂರು", "ಮೈಸೂರು", "ಮಂಗಳೂರು"
+
+### Text Search
+- **Type**: Enter city name in the search bar
+- **Select**: Choose from autocomplete suggestions
+- **Global**: Search cities worldwide with country context
+
 ## 📁 Project Structure
 
 ```
@@ -92,9 +119,13 @@ professional-weather-dashboard/
 │   │   ├── ThemeToggle.tsx
 │   │   ├── LanguageSelector.tsx
 │   │   ├── NotFoundPage.tsx
-│   │   └── SearchBar.tsx
+│   │   ├── SearchBar.tsx
+│   │   ├── LocationDetector.tsx  # NEW: Auto-location detection
+│   │   └── VoiceSearch.tsx       # NEW: Voice search component
 │   ├── hooks/            # Custom React hooks
-│   │   └── useWeatherData.ts
+│   │   ├── useWeatherData.ts
+│   │   ├── useGeolocation.ts     # NEW: Geolocation hook
+│   │   └── useSpeechRecognition.ts # NEW: Voice recognition hook
 │   ├── utils/            # Utility functions
 │   │   ├── translations.ts
 │   │   ├── lazyLoad.ts
