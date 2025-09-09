@@ -1,26 +1,26 @@
 # Cloudflare Pages configuration for Weather Dashboard
 
 name = "professional-weather-dashboard"
-type = "frontend"
+compatibility_date = "2025-09-09"
+
+# Pages specific configuration
+[pages]
+build_command = "npm run build"
+pages_build_output_dir = "dist"
 
 [build]
 command = "npm run build"
-output = "dist"
-publish = "dist"
+upload.format = "service-worker"
+
+[site]
+bucket = "./dist"
 
 [build.environment]
 NODE_VERSION = "18"
 
-[site]
-bucket = "./dist"
-entry-point = "."
-
 [env.production]
 name = "professional-weather-dashboard"
 workers_dev = false
-routes = [
-  { pattern = "*weatherdashboard.yourdomain.com/*", zone_id = "your_zone_id" }
-]
 
 [env.staging]
 name = "professional-weather-dashboard-staging"
@@ -28,5 +28,3 @@ workers_dev = true
 
 # Environment variables reference (don't put actual values here)
 # These will be set in the Cloudflare dashboard
-# [vars]
-# API_URL = "value"
