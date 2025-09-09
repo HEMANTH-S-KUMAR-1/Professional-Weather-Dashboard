@@ -6,10 +6,11 @@ import { translations, Language } from '../utils/translations';
 interface VoiceSearchProps {
   onCityDetected: (cityName: string) => void;
   currentLanguage: Language;
+  isDark?: boolean;
   className?: string;
 }
 
-export const VoiceSearch = ({ onCityDetected, currentLanguage, className = '' }: VoiceSearchProps) => {
+export const VoiceSearch = ({ onCityDetected, currentLanguage, isDark = false, className = '' }: VoiceSearchProps) => {
   const [isActive, setIsActive] = useState(false);
   const t = translations[currentLanguage];
 
@@ -54,13 +55,15 @@ export const VoiceSearch = ({ onCityDetected, currentLanguage, className = '' }:
         onClick={handleVoiceSearch}
         disabled={!isSupported}
         className={`
-          flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300
+          flex items-center justify-center w-14 h-14 rounded-full transition-all duration-300 shadow-lg
           ${isListening || isActive
-            ? 'bg-red-500 hover:bg-red-600 text-white shadow-lg scale-110'
-            : 'bg-white/20 hover:bg-white/30 text-white border border-white/30'
+            ? 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-red-500/30 scale-105 ring-4 ring-red-300/20'
+            : isDark
+              ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-blue-500/30'
+              : 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-blue-400/30'
           }
-          ${!isSupported ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
-          backdrop-blur-md
+          ${!isSupported ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:scale-105'}
+          backdrop-blur-md ring-1 ring-white/10
         `}
         title={isListening ? t.voiceSearch.stop : t.voiceSearch.start}
       >

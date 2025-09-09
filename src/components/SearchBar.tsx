@@ -89,8 +89,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onLocationSelect, placehol
   }, []);
 
   return (
-    <div className="relative w-full max-w-md flex items-center space-x-3">
-      <div ref={searchRef} className="relative flex-1">
+    <div className="relative w-full max-w-lg flex items-center space-x-4">
+      <div ref={searchRef} className="relative flex-1 min-w-0">
         <div className={`
           relative flex items-center backdrop-blur-md rounded-xl border transition-all duration-300
           ${isDark 
@@ -173,6 +173,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onLocationSelect, placehol
       <VoiceSearch
         onCityDetected={handleVoiceCityDetected}
         currentLanguage={currentLanguage}
+        isDark={isDark}
         className="flex-shrink-0"
       />
     </div>

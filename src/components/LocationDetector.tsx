@@ -16,14 +16,19 @@ export const LocationDetector = ({ onLocationDetected, currentLanguage, classNam
 
   const { latitude, longitude, error, loading } = useGeolocation({
     enableHighAccuracy: true,
-    timeout: 15000,
+    timeout: 10000, // Reduced timeout for faster fallback
     maximumAge: 300000, // 5 minutes
   });
 
   useEffect(() => {
+    // Show status immediately when starting location detection
+    setShowStatus(true);
+  }, []);
+
+  useEffect(() => {
     if (latitude && longitude && !hasTriedLocation) {
+      console.log('✅ Geolocation success:', { latitude, longitude });
       setHasTriedLocation(true);
-      setShowStatus(true);
       onLocationDetected(latitude, longitude);
       
       // Hide status after 3 seconds
@@ -31,23 +36,32 @@ export const LocationDetector = ({ onLocationDetected, currentLanguage, classNam
         setShowStatus(false);
       }, 3000);
     } else if (error && !hasTriedLocation) {
+      console.warn('❌ Geolocation error:', error);
       setHasTriedLocation(true);
-      setShowStatus(true);
-      console.warn('Geolocation error:', error);
       
-      // Fallback to default location (Tumakuru, India)
+      // Fallback to default location (Tumakuru, India) immediately
       const defaultLat = 13.3419;
       const defaultLon = 77.1019;
-      setTimeout(() => {
-        onLocationDetected(defaultLat, defaultLon);
-      }, 1000);
+      console.log('🏠 Using fallback location:', { lat: defaultLat, lon: defaultLon });
+      onLocationDetected(defaultLat, defaultLon);
       
       // Hide status after 4 seconds
       setTimeout(() => {
         setShowStatus(false);
       }, 4000);
+    } else if (!loading && !latitude && !longitude && !error && !hasTriedLocation) {
+      // Handle cases where geolocation doesn't work but doesn't error either
+      console.warn('⚠️ Geolocation timeout, using fallback');
+      setHasTriedLocation(true);
+      const defaultLat = 13.3419;
+      const defaultLon = 77.1019;
+      onLocationDetected(defaultLat, defaultLon);
+      
+      setTimeout(() => {
+        setShowStatus(false);
+      }, 4000);
     }
-  }, [latitude, longitude, error, hasTriedLocation, onLocationDetected]);
+  }, [latitude, longitude, error, loading, hasTriedLocation, onLocationDetected]);
 
   if (!showStatus) {
     return null;
