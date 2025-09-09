@@ -2,8 +2,15 @@ import express from 'express';
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
-dotenv.config();
+// Get the directory of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load .env from parent directory
+dotenv.config({ path: join(__dirname, '..', '.env') });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -39,14 +46,34 @@ app.use((req, res, next) => {
   next();
 });
 
-// Rate limiting - simple implementation
+// Rate limiting - enhanced implementation
 const requestCounts = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
-const RATE_LIMIT_MAX = 60; // 60 requests per minute
+const RATE_LIMIT_MAX = 30; // Reduced to 30 requests per minute per IP
+const GLOBAL_RATE_LIMIT = 100; // Global limit for all IPs combined
+let globalRequestCount = 0;
+let globalWindowStart = Date.now();
 
 app.use((req, res, next) => {
-  const ip = req.ip;
+  const ip = req.ip || req.connection.remoteAddress;
   const now = Date.now();
+  
+  // Reset global counter every minute
+  if (now - globalWindowStart > RATE_LIMIT_WINDOW) {
+    globalRequestCount = 0;
+    globalWindowStart = now;
+  }
+  
+  // Check global limit
+  if (globalRequestCount >= GLOBAL_RATE_LIMIT) {
+    return res.status(429).json({ 
+      error: 'Server overloaded', 
+      message: 'Too many requests across all users. Please try again later.',
+      retryAfter: Math.ceil((RATE_LIMIT_WINDOW - (now - globalWindowStart)) / 1000)
+    });
+  }
+  
+  // Check per-IP limit
   const userRequests = requestCounts.get(ip) || [];
   
   // Clean up old requests
@@ -55,12 +82,15 @@ app.use((req, res, next) => {
   if (recentRequests.length >= RATE_LIMIT_MAX) {
     return res.status(429).json({ 
       error: 'Too many requests', 
-      message: 'Please try again later'
+      message: 'Rate limit exceeded. Please try again later.',
+      retryAfter: Math.ceil((RATE_LIMIT_WINDOW - (now - recentRequests[0])) / 1000)
     });
   }
   
   recentRequests.push(now);
   requestCounts.set(ip, recentRequests);
+  globalRequestCount++;
+  
   next();
 });
 

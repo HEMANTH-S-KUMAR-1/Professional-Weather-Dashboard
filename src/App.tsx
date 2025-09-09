@@ -68,17 +68,10 @@ function App() {
     document.documentElement.classList.toggle('dark', isDark);
   }, [isDark]);
 
+  // Handle language changes
   useEffect(() => {
     localStorage.setItem('language', currentLanguage);
-    // Refetch data with new language
-    if (currentWeather) {
-      fetchWeatherData(
-        currentWeather.coord.lat, 
-        currentWeather.coord.lon, 
-        currentLanguage
-      );
-    }
-  }, [currentLanguage, currentWeather, fetchWeatherData]);
+  }, [currentLanguage]);
 
   // Handle browser navigation
   useEffect(() => {
