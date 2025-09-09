@@ -34,12 +34,27 @@ export async function onRequest(context) {
     });
   }
   
-  // Mask the API key for security while showing part of it for debugging
-  const apiKeyPrefix = OWM_API_KEY.substring(0, 4);
-  const apiKeyLength = OWM_API_KEY.length;
-  console.log(`API Key found. Length: ${apiKeyLength}, Prefix: ${apiKeyPrefix}***`);
-  
-
+    // Mask the API key for security while showing part of it for debugging
+    const apiKeyPrefix = OWM_API_KEY.substring(0, 4);
+    const apiKeySuffix = OWM_API_KEY.substring(OWM_API_KEY.length - 4);
+    const apiKeyLength = OWM_API_KEY.length;
+    console.log(`API Key found. Length: ${apiKeyLength}, Prefix: ${apiKeyPrefix}***${apiKeySuffix}`);
+    
+    // Basic validation of API key format
+    if (apiKeyLength < 20) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'API key format warning',
+        message: `Your API key appears to be too short (${apiKeyLength} characters). OpenWeatherMap API keys are typically 32 characters long.`,
+        recommendedAction: 'Please check your API key in Cloudflare Pages settings and ensure it is correctly copied from OpenWeatherMap.'
+      }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+    }
   try {
     // Make a simple test call to the OpenWeatherMap API
     const testUrl = `https://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=${OWM_API_KEY}&units=metric`;
@@ -103,8 +118,18 @@ export async function onRequest(context) {
           feels_like: data.main?.feels_like,
           humidity: data.main?.humidity
         },
-        apiKeyLength,
-        apiKeyPrefix,
+        apiKeyDetails: {
+          length: apiKeyLength,
+          prefix: apiKeyPrefix,
+          suffix: apiKeySuffix,
+          isValidFormat: apiKeyLength >= 20,
+          hint: 'If this is your API key, it should match what you see in your OpenWeatherMap account'
+        },
+        nextSteps: [
+          'Visit /api-test-detailed for more comprehensive tests',
+          'If everything looks good, your weather dashboard should be working properly',
+          'For troubleshooting, visit /api-troubleshooting.html'
+        ],
         timestamp: new Date().toISOString()
       }), {
         headers: {

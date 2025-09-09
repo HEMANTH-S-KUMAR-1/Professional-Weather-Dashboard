@@ -41,32 +41,41 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, onRetry, is
         <div className={`mb-6 text-sm p-4 rounded ${isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>
           <p className="font-semibold">Possible Fix:</p>
           <p>Please make sure the OWM_API_KEY environment variable is set in your Cloudflare Pages dashboard.</p>
+          <p className="mt-2">Visit <a href="/api-test" className={`underline ${isDark ? 'text-blue-300' : 'text-blue-600'}`} target="_blank">API Test</a> to check your API key status.</p>
         </div>
       )}
       
-      <h3 className={`text-xl font-semibold mb-2 ${isDark ? 'text-red-300' : 'text-red-700'}`}>
-        Something went wrong
-      </h3>
+      {message.includes('fetch') && (
+        <div className={`mb-6 text-sm p-4 rounded ${isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>
+          <p className="font-semibold">Network Issue:</p>
+          <p>There seems to be a problem connecting to the weather data service.</p>
+          <p className="mt-2">For detailed troubleshooting, visit <a href="/api-troubleshooting.html" className={`underline ${isDark ? 'text-blue-300' : 'text-blue-600'}`} target="_blank">API Troubleshooting Guide</a>.</p>
+        </div>
+      )}
       
-      <p className={`mb-6 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-        {message}
-      </p>
+      {message.includes('rate limit') && (
+        <div className={`mb-6 text-sm p-4 rounded ${isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>
+          <p className="font-semibold">Rate Limit Exceeded:</p>
+          <p>You've reached the OpenWeatherMap API call limit (60 calls/minute for free accounts).</p>
+          <p className="mt-2">Please wait a moment before trying again.</p>
+        </div>
+      )}
       
       {onRetry && (
         <motion.button
           onClick={onRetry}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           className={`
-            flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-colors mx-auto
+            flex items-center px-6 py-3 rounded-lg font-medium transition-colors mx-auto
             ${isDark 
               ? 'bg-red-600 hover:bg-red-700 text-white' 
               : 'bg-red-500 hover:bg-red-600 text-white'
             }
           `}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
         >
-          <RefreshCw className="w-4 h-4" />
-          <span>Try Again</span>
+          <RefreshCw className="w-5 h-5 mr-2" />
+          Try Again
         </motion.button>
       )}
     </motion.div>

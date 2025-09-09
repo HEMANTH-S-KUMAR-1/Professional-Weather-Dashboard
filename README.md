@@ -2,7 +2,7 @@
 
 A futuristic, animated, multilingual weather dashboard powered by OpenWeatherMap APIs. Features glassmorphism design, dark/light themes, and real-time weather data including current conditions, 5-day forecasts, and air quality metrics.
 
-![Weather Dashboard Preview](https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=800&h=400&fit=crop)
+![Weather Dashboard Preview](public/preview.jpg)
 
 ## ✨ Features
 
@@ -24,11 +24,14 @@ A futuristic, animated, multilingual weather dashboard powered by OpenWeatherMap
 - **Animations**: Smooth transitions, hover effects, loading states
 - **Responsive**: Mobile-first design with breakpoints for all devices
 
-### 🔒 **Security**
+### 🔒 **Security & Performance**
 - **API Proxy**: Backend secures OpenWeatherMap API keys
 - **Environment Variables**: Secure configuration management
 - **CORS Protection**: Proper cross-origin resource sharing
-- **Rate Limiting**: Basic protection against abuse
+- **Rate Limiting**: Protection against abuse
+- **Image Optimization**: Lazy loading for faster page loads
+- **Performance Monitoring**: Real-time tracking of loading metrics
+- **Code Splitting**: Optimized bundle sizes for faster loading
 
 ## 🚀 Quick Start
 
@@ -79,6 +82,7 @@ professional-weather-dashboard/
 ├── public/                 # Static assets
 │   ├── favicon.svg         # Website favicon
 │   ├── robots.txt          # Search engine instructions
+│   ├── _redirects          # Netlify routing configuration
 │   └── preview.jpg         # Social media preview image
 ├── src/                   # React frontend source
 │   ├── components/        # React components
@@ -87,11 +91,14 @@ professional-weather-dashboard/
 │   │   ├── AirQualityCard.tsx
 │   │   ├── ThemeToggle.tsx
 │   │   ├── LanguageSelector.tsx
+│   │   ├── NotFoundPage.tsx
 │   │   └── SearchBar.tsx
 │   ├── hooks/            # Custom React hooks
 │   │   └── useWeatherData.ts
 │   ├── utils/            # Utility functions
-│   │   └── translations.ts
+│   │   ├── translations.ts
+│   │   ├── lazyLoad.ts
+│   │   └── performanceMonitor.ts
 │   ├── types/            # TypeScript definitions
 │   │   └── weather.ts
 │   └── App.tsx           # Main application component
@@ -189,7 +196,7 @@ When deployed to Cloudflare Pages, this project includes several diagnostic tool
 
 See the API Troubleshooting Guide at `/public/api-troubleshooting.html` for detailed solutions to common problems.
 
-## 🔧 Development
+## 🔧 Development & Performance
 
 ### Available Scripts
 ```bash
@@ -202,11 +209,50 @@ npm run preview      # Preview production build locally
 npm run lint         # Run ESLint to check code quality
 ```
 
-### Code Quality
-- **TypeScript**: Full type safety
-- **ESLint**: Code linting and formatting
-- **Responsive Design**: Mobile-first approach
-- **Performance**: Optimized with lazy loading and code splitting
+### Performance Optimizations
+This project includes several performance optimizations:
+
+1. **Lazy Loading Images**: Using the `lazyLoad` utility to defer loading of offscreen images
+2. **Performance Monitoring**: Real-time tracking of page load metrics and long tasks
+3. **Route-Based Code Splitting**: Only loading components needed for current route
+4. **Minification and Compression**: Optimized bundle sizes with Terser
+5. **Bundle Optimization**: Manual chunk splitting for React and Framer Motion
+6. **Proper Error Handling**: Custom error page with helpful diagnostics
+7. **Cached API Responses**: Backend caching for frequent weather queries
+
+To implement lazy loading in your components:
+```jsx
+import { lazyLoad } from '../utils/lazyLoad';
+import { useEffect } from 'react';
+
+const YourComponent = () => {
+  useEffect(() => {
+    // Initialize lazy loading
+    lazyLoad.init();
+  }, []);
+
+  return (
+    <img 
+      src="placeholder.jpg" 
+      data-src="actual-image.jpg" 
+      alt="Description" 
+    />
+  );
+};
+```
+
+To measure performance:
+```jsx
+import { performanceMonitor } from '../utils/performanceMonitor';
+
+// Start timing
+performanceMonitor.mark('operation-name');
+
+// Do some work...
+
+// End timing and log result
+const duration = performanceMonitor.measure('operation-name');
+```
 
 ## 📱 Browser Support
 

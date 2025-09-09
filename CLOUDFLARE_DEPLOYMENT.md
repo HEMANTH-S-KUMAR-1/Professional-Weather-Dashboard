@@ -36,7 +36,20 @@ Enter the following build settings:
 Add the following environment variables:
 
 - `OWM_API_KEY`: Your OpenWeatherMap API key (required for the API functions to work)
+  - Must be a valid API key from OpenWeatherMap
+  - You can get a free API key by signing up at [OpenWeatherMap](https://home.openweathermap.org/users/sign_up)
+  - New API keys may take up to 2 hours to activate
+  - Key should begin with numbers and letters, be about 32 characters long
+  - Verify that it has access to the following APIs:
+    - Current Weather Data
+    - 5 Day / 3 Hour Forecast
+    - Air Pollution API
+    - Geocoding API
+  - Keep this key secret as it has usage limits
+  - If you encounter API errors, verify this key is set correctly
 - `NODE_VERSION`: 18.20.8 (or your preferred Node version)
+
+After deployment, you can verify your API key is working correctly by visiting the `/api-test` endpoint of your deployed site. For more comprehensive API diagnostics, visit the `/diagnostics` page.
 
 ### 4. Advanced Settings (Optional)
 
@@ -73,6 +86,20 @@ The project now includes Cloudflare Functions that proxy requests to OpenWeather
 1. Convert your Express routes to serverless functions
 2. Deploy using Cloudflare Functions
 
+## Redirects Configuration
+
+Your project may include a `_redirects` file to handle SPA routing and API proxying. Based on deployment logs, ensure your redirects are configured correctly:
+
+```
+# SPA fallback (avoid infinite loops)
+/*    /index.html   200!
+
+# API proxying (if using separate backend)
+# /api/*  https://your-backend-url.com/api/:splat  200
+```
+
+The `200!` syntax is important to prevent infinite redirect loops that might be detected during deployment.
+
 ## Custom Domain Setup
 
 1. In your Cloudflare Pages project, go to "Custom domains"
@@ -82,17 +109,38 @@ The project now includes Cloudflare Functions that proxy requests to OpenWeather
 ## Post-Deployment Verification
 
 1. Check that your site loads correctly
-2. Verify that API requests are working
-3. Test all functionality including language switching and theme toggle
-4. Ensure responsive design works on different devices
+2. Verify that API requests are working:
+   - Visit `/api-test` to check your API key status
+   - Try searching for a city to test the geocoding API
+   - Verify weather data loads for locations
+3. If you encounter API issues:
+   - Go to `/diagnostics` to access all testing tools
+   - Check the environment variables in your Cloudflare Pages settings
+   - Review the API troubleshooting guide at `/api-troubleshooting.html`
+4. Test all functionality including language switching and theme toggle
+5. Ensure responsive design works on different devices
 
 ## Troubleshooting
 
 - **Build failures**: Check build logs for errors
   - If you see a "terser not found" error, use the `npm run build:cloudflare` command which automatically installs terser before building
-- **API connectivity issues**: Verify environment variables and CORS settings
+- **API connectivity issues**: 
+  - Verify your `OWM_API_KEY` is correctly set in the environment variables
+  - Check the `/api-test` endpoint to validate your API key status
+  - Use the `/diagnostics` page to access comprehensive testing tools
+  - For detailed API error information, see the `/api-troubleshooting.html` guide
 - **404 errors**: Check your `_redirects` file configuration
 - **Performance issues**: Use Cloudflare's Analytics to identify bottlenecks
 - **Wrangler.toml issues**: If you're using a wrangler.toml file, ensure it has the `pages_build_output_dir` property correctly set
+
+### API Testing Tools
+
+After deployment, these diagnostic endpoints are available:
+
+1. `/diagnostics` - Main dashboard with links to all testing tools
+2. `/api-test` - Simple API key validation
+3. `/api-test-detailed` - Comprehensive tests of all API endpoints
+4. `/direct-test` - Tests your API key directly against OpenWeatherMap
+5. `/url-builder` - Tool to build and test different API URLs
 
 For additional help, refer to [Cloudflare Pages documentation](https://developers.cloudflare.com/pages/).

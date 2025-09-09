@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeToggle } from './components/ThemeToggle';
 import { LanguageSelector } from './components/LanguageSelector';
@@ -8,8 +8,11 @@ import { ForecastCard } from './components/ForecastCard';
 import { AirQualityCard } from './components/AirQualityCard';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { ErrorMessage } from './components/ErrorMessage';
+import { NotFoundPage } from './components/NotFoundPage';
 import { useWeatherData } from './hooks/useWeatherData';
 import { translations, Language } from './utils/translations';
+import { lazyLoad } from './utils/lazyLoad';
+import { performanceMonitor } from './utils/performanceMonitor';
 
 function App() {
   const [isDark, setIsDark] = useState(() => {
@@ -20,6 +23,12 @@ function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem('language');
     return (saved as Language) || 'en';
+  });
+
+  const [currentRoute, setCurrentRoute] = useState<string>(() => {
+    // Get the path or default to home
+    const path = window.location.pathname;
+    return path === '/' ? 'home' : '404';
   });
 
   const {
@@ -33,6 +42,26 @@ function App() {
 
   const t = translations[currentLanguage];
 
+  // Initialize performance monitoring
+  useEffect(() => {
+    // Start performance monitoring
+    performanceMonitor.recordPageLoadMetrics();
+    
+    // Detect long tasks
+    const longTaskObserver = performanceMonitor.detectLongTasks();
+    
+    // Initialize lazy loading
+    lazyLoad.init();
+    
+    return () => {
+      // Clean up observers
+      if (longTaskObserver) {
+        longTaskObserver.disconnect();
+      }
+    };
+  }, []);
+
+  // Theme toggle
   useEffect(() => {
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
     document.documentElement.classList.toggle('dark', isDark);
@@ -50,6 +79,17 @@ function App() {
     }
   }, [currentLanguage]);
 
+  // Handle browser navigation
+  useEffect(() => {
+    const handleRouteChange = () => {
+      const path = window.location.pathname;
+      setCurrentRoute(path === '/' ? 'home' : '404');
+    };
+
+    window.addEventListener('popstate', handleRouteChange);
+    return () => window.removeEventListener('popstate', handleRouteChange);
+  }, []);
+
   const handleLocationSelect = (lat: number, lon: number) => {
     fetchWeatherData(lat, lon, currentLanguage);
   };
@@ -64,6 +104,11 @@ function App() {
     } else {
       fetchWeatherData(28.6139, 77.2090, currentLanguage); // Default to Delhi
     }
+  };
+
+  const goToHome = () => {
+    window.history.pushState({}, '', '/');
+    setCurrentRoute('home');
   };
 
   return (
@@ -89,18 +134,21 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
             <motion.h1
-              className={`text-2xl lg:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-800'}`}
+              className={`text-2xl lg:text-3xl font-bold ${isDark ? 'text-white' : 'text-gray-800'} cursor-pointer`}
               whileHover={{ scale: 1.02 }}
+              onClick={goToHome}
             >
               {t.appTitle}
             </motion.h1>
             
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <SearchBar
-                onLocationSelect={handleLocationSelect}
-                placeholder={t.searchPlaceholder}
-                isDark={isDark}
-              />
+              {currentRoute === 'home' && (
+                <SearchBar
+                  onLocationSelect={handleLocationSelect}
+                  placeholder={t.searchPlaceholder}
+                  isDark={isDark}
+                />
+              )}
               
               <div className="flex items-center space-x-4">
                 <LanguageSelector
@@ -118,48 +166,52 @@ function App() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <AnimatePresence mode="wait">
-          {loading ? (
-            <LoadingSpinner isDark={isDark} message={t.loading} />
-          ) : error ? (
-            <ErrorMessage 
-              message={error} 
-              onRetry={handleRetry} 
-              isDark={isDark} 
-            />
-          ) : currentWeather && forecast && airPollution ? (
-            <motion.div
-              key="weather-data"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="space-y-8"
-            >
-              {/* Current Weather */}
-              <WeatherCard
-                weatherData={currentWeather}
-                translations={t}
-                isDark={isDark}
+          {currentRoute === 'home' ? (
+            loading ? (
+              <LoadingSpinner isDark={isDark} message={t.loading} />
+            ) : error ? (
+              <ErrorMessage 
+                message={error} 
+                onRetry={handleRetry} 
+                isDark={isDark} 
               />
+            ) : currentWeather && forecast && airPollution ? (
+              <motion.div
+                key="weather-data"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="space-y-8"
+              >
+                {/* Current Weather */}
+                <WeatherCard
+                  weatherData={currentWeather}
+                  translations={t}
+                  isDark={isDark}
+                />
 
-              {/* Forecast and Air Quality Grid */}
-              <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                <div className="xl:col-span-2">
-                  <ForecastCard
-                    forecastData={forecast}
-                    translations={t}
-                    isDark={isDark}
-                  />
+                {/* Forecast and Air Quality Grid */}
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+                  <div className="xl:col-span-2">
+                    <ForecastCard
+                      forecastData={forecast}
+                      translations={t}
+                      isDark={isDark}
+                    />
+                  </div>
+                  <div>
+                    <AirQualityCard
+                      airPollutionData={airPollution}
+                      translations={t}
+                      isDark={isDark}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <AirQualityCard
-                    airPollutionData={airPollution}
-                    translations={t}
-                    isDark={isDark}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          ) : null}
+              </motion.div>
+            ) : null
+          ) : (
+            <NotFoundPage isDark={isDark} onBackToHome={goToHome} />
+          )}
         </AnimatePresence>
       </main>
 

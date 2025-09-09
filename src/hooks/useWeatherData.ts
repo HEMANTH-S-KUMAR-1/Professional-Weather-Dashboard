@@ -41,7 +41,19 @@ export const useWeatherData = (): UseWeatherDataReturn => {
         // Try to parse as JSON, but handle if it's HTML
         try {
           const errorJson = JSON.parse(errorText);
-          throw new Error(errorJson.message || errorJson.error || 'Failed to fetch weather data');
+          
+          // Enhanced error messages for common issues
+          if (errorJson.error === 'API key not configured') {
+            throw new Error('API key is missing. Please set the OWM_API_KEY environment variable.');
+          } else if (errorJson.error === 'Invalid API key format') {
+            throw new Error('API key format is invalid. Please check your OpenWeatherMap API key.');
+          } else if (errorResponse.status === 429) {
+            throw new Error('API rate limit exceeded. Please try again later.');
+          } else if (errorResponse.status === 401) {
+            throw new Error('Unauthorized: API key is invalid or not activated yet. New API keys may take up to 2 hours to activate.');
+          } else {
+            throw new Error(errorJson.message || errorJson.error || `Failed to fetch weather data: ${errorResponse.status}`);
+          }
         } catch (parseError) {
           // If it's HTML or invalid JSON, provide a more helpful error
           if (errorText.includes('<!doctype') || errorText.includes('<html')) {

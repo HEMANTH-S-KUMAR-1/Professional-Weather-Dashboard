@@ -119,6 +119,28 @@
     </div>
     
     <div class="error-card card">
+      <h3><span class="error-code">OWM_API_KEY</span> Environment Variable Issues</h3>
+      <p><strong>Error message:</strong> "API key not configured" or "Invalid API key format"</p>
+      <p><strong>Cause:</strong> The <code>OWM_API_KEY</code> environment variable is missing, incorrectly set, or contains an invalid key.</p>
+      <p><strong>About the API key:</strong></p>
+      <ul>
+        <li>An OpenWeatherMap API key is typically 32 characters long</li>
+        <li>Example format (not a real key): <code>a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6</code></li>
+        <li>You need to sign up at <a href="https://home.openweathermap.org/users/sign_up" target="_blank">OpenWeatherMap</a> to get a key</li>
+        <li>After signing up, find your API key in your account dashboard</li>
+      </ul>
+      <p><strong>Solution:</strong></p>
+      <ol>
+        <li>Go to your Cloudflare Pages dashboard</li>
+        <li>Select your project</li>
+        <li>Click on "Settings" > "Environment variables"</li>
+        <li>Add or update the variable named <code>OWM_API_KEY</code> with your API key</li>
+        <li>Make sure to add it to both Production and Preview environments if needed</li>
+        <li>Save changes and trigger a new deployment</li>
+      </ol>
+    </div>
+    
+    <div class="error-card card">
       <h3><span class="error-code">404</span> Not Found</h3>
       <p><strong>Error message:</strong> "Not found" or "Invalid endpoint"</p>
       <p><strong>Cause:</strong> You're trying to access an endpoint that doesn't exist or using incorrect parameters.</p>

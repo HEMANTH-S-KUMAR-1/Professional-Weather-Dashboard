@@ -17,7 +17,23 @@ export async function onRequest(context) {
   if (!OWM_API_KEY) {
     return new Response(JSON.stringify({ 
       error: 'API key not configured',
-      message: 'Please set the OWM_API_KEY environment variable in Cloudflare Pages settings'
+      message: 'Please set the OWM_API_KEY environment variable in Cloudflare Pages settings',
+      help: 'Visit /api-test to check your API key status or /diagnostics for full troubleshooting tools'
+    }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+  }
+  
+  // Validate API key format (basic check)
+  if (OWM_API_KEY.length < 20) {
+    return new Response(JSON.stringify({ 
+      error: 'Invalid API key format',
+      message: 'The provided API key appears to be invalid (too short)',
+      help: 'OpenWeatherMap API keys are typically 32 characters long. Please check your key in Cloudflare Pages settings.'
     }), {
       status: 500,
       headers: {
