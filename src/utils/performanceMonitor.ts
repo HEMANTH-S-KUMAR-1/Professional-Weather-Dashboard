@@ -57,8 +57,9 @@ export const performanceMonitor = {
           console.log(`⏱️ DOM Ready: ${domReadyTime}ms`);
           
           // Optional: send metrics to analytics service
-          if ((window as any).gtag) {
-            (window as any).gtag('event', 'performance', {
+          const gtag = (window as unknown as { gtag?: (command: string, eventName: string, parameters: Record<string, number>) => void }).gtag;
+          if (gtag) {
+            gtag('event', 'performance', {
               'page_load_time': pageLoadTime,
               'dom_ready_time': domReadyTime
             });

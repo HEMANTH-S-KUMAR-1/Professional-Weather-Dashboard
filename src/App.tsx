@@ -77,7 +77,7 @@ function App() {
         currentLanguage
       );
     }
-  }, [currentLanguage]);
+  }, [currentLanguage, currentWeather, fetchWeatherData]);
 
   // Handle browser navigation
   useEffect(() => {

@@ -11,13 +11,13 @@ interface ForecastCardProps {
 
 export const ForecastCard: React.FC<ForecastCardProps> = ({ forecastData, translations, isDark }) => {
   // Group forecast by days (take one entry per day around noon)
-  const dailyForecasts = forecastData.list.filter((item, index) => {
+  const dailyForecasts = forecastData.list.filter((item, _index) => {
     const date = new Date(item.dt * 1000);
     const hour = date.getHours();
     return hour >= 11 && hour <= 13; // Around noon
   }).slice(0, 5);
 
-  const formatDate = (timestamp: number, index: number) => {
+  const formatDate = (timestamp: number, _index: number) => {
     const date = new Date(timestamp * 1000);
     const today = new Date();
     const tomorrow = new Date(today);

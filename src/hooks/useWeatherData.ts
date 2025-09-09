@@ -54,7 +54,7 @@ export const useWeatherData = (): UseWeatherDataReturn => {
           } else {
             throw new Error(errorJson.message || errorJson.error || `Failed to fetch weather data: ${errorResponse.status}`);
           }
-        } catch (parseError) {
+        } catch (_parseError) {
           // If it's HTML or invalid JSON, provide a more helpful error
           if (errorText.includes('<!doctype') || errorText.includes('<html')) {
             throw new Error('API returned HTML instead of JSON. Check if the API key is set correctly.');
@@ -69,7 +69,7 @@ export const useWeatherData = (): UseWeatherDataReturn => {
         const text = await response.text();
         try {
           return JSON.parse(text);
-        } catch (e) {
+        } catch (_e) {
           console.error('Failed to parse JSON:', text.substring(0, 100) + '...');
           throw new Error('Invalid JSON response from API');
         }
@@ -107,7 +107,7 @@ export const useWeatherData = (): UseWeatherDataReturn => {
       const text = await response.text();
       try {
         return JSON.parse(text);
-      } catch (e) {
+      } catch (_e) {
         console.error('Failed to parse geocoding JSON:', text.substring(0, 100) + '...');
         throw new Error('Invalid JSON response from geocoding API');
       }

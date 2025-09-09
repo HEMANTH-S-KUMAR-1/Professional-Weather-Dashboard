@@ -1,5 +1,14 @@
 User-agent: *
 Allow: /
-Disallow: /api/
 
+# Specific paths
+Allow: /api-test
+Allow: /diagnostics
+Allow: /api-troubleshooting.html
+
+# Disallow API endpoints from crawling
+Disallow: /api/
+Disallow: /functions/
+
+# Sitemap
 Sitemap: https://your-weather-dashboard-url.com/sitemap.xml

@@ -6,18 +6,28 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     exclude: ['lucide-react'],
+    include: ['react', 'react-dom', 'framer-motion'],
   },
   build: {
     minify: 'terser',
     sourcemap: false,
+    target: 'esnext',
+    cssCodeSplit: true,
     rollupOptions: {
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
           framer: ['framer-motion'],
+          lucide: ['lucide-react'],
         }
       }
-    }
+    },
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
   },
   server: {
     host: true,

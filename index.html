@@ -5,19 +5,49 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0f172a" />
-    <title>Professional Weather Dashboard</title>
-    <meta name="description" content="A futuristic, multilingual weather dashboard with glassmorphism design, powered by OpenWeatherMap APIs" />
-    <meta name="keywords" content="weather, dashboard, forecast, air quality, multilingual, glassmorphism" />
-    <meta property="og:title" content="Professional Weather Dashboard" />
-    <meta property="og:description" content="A modern weather app with current conditions, forecasts, and air quality data" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <title>Professional Weather Dashboard - Real-time Weather & Air Quality</title>
+    <meta name="description" content="A futuristic, multilingual weather dashboard with glassmorphism design, powered by OpenWeatherMap APIs. Get real-time weather, forecasts, and air quality data." />
+    <meta name="keywords" content="weather, dashboard, forecast, air quality, multilingual, glassmorphism, real-time, openweathermap" />
+    <meta name="author" content="Professional Weather Dashboard" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://your-weather-dashboard-url.com" />
+    <meta property="og:title" content="Professional Weather Dashboard - Real-time Weather & Air Quality" />
+    <meta property="og:description" content="A modern weather app with current conditions, forecasts, and air quality data" />
     <meta property="og:image" content="https://your-weather-dashboard-url.com/preview.jpg" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://your-weather-dashboard-url.com" />
+    <meta property="twitter:title" content="Professional Weather Dashboard - Real-time Weather & Air Quality" />
+    <meta property="twitter:description" content="A modern weather app with current conditions, forecasts, and air quality data" />
+    <meta property="twitter:image" content="https://your-weather-dashboard-url.com/preview.jpg" />
+    
+    <!-- Preconnect to external domains for better performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://api.openweathermap.org" crossorigin>
+    
+    <!-- DNS prefetch for better performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://api.openweathermap.org">
+    
+    <!-- Font with optimized loading -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   </head>
   <body class="font-inter antialiased">
+    <noscript>
+      <div style="text-align: center; padding: 20px; font-family: Inter, sans-serif;">
+        <h1>JavaScript Required</h1>
+        <p>This weather dashboard requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

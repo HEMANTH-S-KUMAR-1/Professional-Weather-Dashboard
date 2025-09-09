@@ -1,0 +1,27 @@
+{
+  "name": "Professional Weather Dashboard",
+  "short_name": "Weather Dashboard",
+  "description": "A modern weather app with real-time conditions, forecasts, and air quality data",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["weather", "productivity", "utilities"],
+  "screenshots": [
+    {
+      "src": "/preview.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "label": "Weather Dashboard Main View"
+    }
+  ]
+}
