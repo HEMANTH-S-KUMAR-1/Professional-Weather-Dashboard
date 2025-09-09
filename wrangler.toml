@@ -1,0 +1,11 @@
+[build]
+command = "npm run build:cloudflare"
+cwd = "."
+
+[build.environment_variables]
+NODE_VERSION = "20.19.0"
+
+pages_build_output_dir = "dist"
+
+[vars]
+# Environment variables will be set in Cloudflare Pages dashboard
