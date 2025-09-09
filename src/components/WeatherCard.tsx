@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Droplets, 
@@ -17,7 +17,7 @@ interface WeatherCardProps {
   isDark: boolean;
 }
 
-export const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData, translations, isDark }) => {
+export const WeatherCard: React.FC<WeatherCardProps> = memo(({ weatherData, translations, isDark }) => {
   const iconUrl = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@4x.png`;
   
   const formatTime = (timestamp: number) => {
@@ -177,4 +177,4 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData, translati
       </div>
     </motion.div>
   );
-};
+});

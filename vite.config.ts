@@ -6,19 +6,16 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     exclude: ['lucide-react'],
-    include: ['react', 'react-dom', 'framer-motion'],
   },
   build: {
     minify: 'terser',
     sourcemap: false,
-    target: 'esnext',
-    cssCodeSplit: true,
     rollupOptions: {
       output: {
         manualChunks: {
           react: ['react', 'react-dom'],
           framer: ['framer-motion'],
-          lucide: ['lucide-react'],
+          icons: ['lucide-react']
         }
       }
     },
@@ -28,6 +25,7 @@ export default defineConfig({
         drop_debugger: true,
       },
     },
+    chunkSizeWarningLimit: 1000,
   },
   server: {
     host: true,

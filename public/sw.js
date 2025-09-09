@@ -1,9 +1,8 @@
-// Service Worker for Weather Dashboard
-const CACHE_NAME = 'weather-dashboard-v1';
+// Service Worker for Professional Weather Dashboard
+const CACHE_NAME = 'professional-weather-dashboard-v2';
 const urlsToCache = [
   '/',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
+  '/index.html',
   '/manifest.json',
   '/favicon.svg'
 ];
@@ -16,13 +15,35 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Only cache GET requests and exclude API calls
-  if (event.request.method === 'GET' && !event.request.url.includes('/api/')) {
+  // Skip cross-origin requests and API calls
+  if (event.request.method === 'GET' && 
+      event.request.url.startsWith(self.location.origin) && 
+      !event.request.url.includes('/api/') &&
+      !event.request.url.includes('openweathermap')) {
     event.respondWith(
       caches.match(event.request)
         .then((response) => {
-          // Return cached version or fetch from network
-          return response || fetch(event.request);
+          // Cache hit - return response
+          if (response) {
+            return response;
+          }
+
+          return fetch(event.request).then((response) => {
+            // Check if we received a valid response
+            if (!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+
+            // Clone the response for caching
+            const responseToCache = response.clone();
+
+            caches.open(CACHE_NAME)
+              .then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+
+            return response;
+          });
         })
     );
   }

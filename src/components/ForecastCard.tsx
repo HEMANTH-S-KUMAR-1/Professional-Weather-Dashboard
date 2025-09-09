@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { ForecastData } from '../types/weather';
 import { Translations } from '../utils/translations';
@@ -9,7 +9,7 @@ interface ForecastCardProps {
   isDark: boolean;
 }
 
-export const ForecastCard: React.FC<ForecastCardProps> = ({ forecastData, translations, isDark }) => {
+export const ForecastCard: React.FC<ForecastCardProps> = memo(({ forecastData, translations, isDark }) => {
   // Group forecast by days (take one entry per day around noon)
   const dailyForecasts = forecastData.list.filter((item, _index) => {
     const date = new Date(item.dt * 1000);
@@ -103,4 +103,4 @@ export const ForecastCard: React.FC<ForecastCardProps> = ({ forecastData, transl
       </div>
     </motion.div>
   );
-};
+});

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { Wind } from 'lucide-react';
 import { AirPollutionData } from '../types/weather';
@@ -10,7 +10,7 @@ interface AirQualityCardProps {
   isDark: boolean;
 }
 
-export const AirQualityCard: React.FC<AirQualityCardProps> = ({ 
+export const AirQualityCard: React.FC<AirQualityCardProps> = memo(({ 
   airPollutionData, 
   translations, 
   isDark 
@@ -94,7 +94,7 @@ export const AirQualityCard: React.FC<AirQualityCardProps> = ({
                 key={index} 
                 className={`${isDark ? 'text-gray-400' : 'text-gray-500'}`}
               >
-                {index + 1}
+                {level}
               </span>
             ))}
           </div>
@@ -130,4 +130,4 @@ export const AirQualityCard: React.FC<AirQualityCardProps> = ({
       </div>
     </motion.div>
   );
-};
+});
