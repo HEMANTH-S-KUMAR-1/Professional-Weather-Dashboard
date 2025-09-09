@@ -1,0 +1,11 @@
+# Redirects for Cloudflare Pages
+
+# Redirect all API requests to your backend in production
+# You'll need to update the backend URL to your actual backend service
+/api/*  https://your-backend-api.example.com/api/:splat  200
+
+# Redirect www to non-www (optional)
+https://www.weatherdashboard.yourdomain.com/*  https://weatherdashboard.yourdomain.com/:splat  301!
+
+# SPA fallback - Always return index.html for any unknown routes
+/*    /index.html   200

@@ -7,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 dist
 dist-ssr
@@ -15,6 +16,7 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea
 .DS_Store
 *.suo
@@ -26,18 +28,32 @@ dist-ssr
 # Environment variables
 .env
 .env.local
+.env.development
 .env.development.local
+.env.test
 .env.test.local
+.env.production
 .env.production.local
+.dev.vars
 
 # Backend specific
 backend/node_modules
 backend/.env
 backend/logs
+backend/.dev.vars
 
 # Build artifacts
 build/
 *.tgz
+.vercel
+.netlify
+
+# Cloudflare specific
+.wrangler/
+.cloudflare/
+.dev.vars
+dist/
+worker/
 
 # OS generated files
 .DS_Store
@@ -47,3 +63,28 @@ build/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Cache and temporary files
+.cache/
+.temp/
+.tmp/
+tmp/
+temp/
+
+# Secret files that might contain keys or tokens
+*.pem
+*.key
+*.cert
+*.p12
+secrets.json
+.secret*
+service-account*.json
+
+# Logs from deployment tools
+*-debug.log
+*-error.log
+/.changelog
+
+# Serverless deployment configs that might contain sensitive data
+.serverless/
+_cloudflare/
