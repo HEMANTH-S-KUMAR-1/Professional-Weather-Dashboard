@@ -55,6 +55,12 @@ build/
 dist/
 worker/
 
+# Bolt.new references
+.bolt/
+bolt.new/
+*bolt*
+*.bolt*
+
 # OS generated files
 .DS_Store
 .DS_Store?
