@@ -1,0 +1,129 @@
+export type Language = 'en' | 'hi' | 'kn';
+
+export interface Translations {
+  appTitle: string;
+  searchPlaceholder: string;
+  currentWeather: string;
+  forecast: string;
+  airQuality: string;
+  temperature: string;
+  feelsLike: string;
+  humidity: string;
+  pressure: string;
+  windSpeed: string;
+  visibility: string;
+  sunrise: string;
+  sunset: string;
+  airQualityIndex: string;
+  pm25: string;
+  pm10: string;
+  co: string;
+  no2: string;
+  o3: string;
+  so2: string;
+  loading: string;
+  error: string;
+  searchError: string;
+  noResults: string;
+  today: string;
+  tomorrow: string;
+  dayNames: string[];
+  monthNames: string[];
+  aqiLevels: string[];
+}
+
+export const translations: Record<Language, Translations> = {
+  en: {
+    appTitle: 'Professional Weather Dashboard',
+    searchPlaceholder: 'Search for a city...',
+    currentWeather: 'Current Weather',
+    forecast: '5-Day Forecast',
+    airQuality: 'Air Quality',
+    temperature: 'Temperature',
+    feelsLike: 'Feels like',
+    humidity: 'Humidity',
+    pressure: 'Pressure',
+    windSpeed: 'Wind Speed',
+    visibility: 'Visibility',
+    sunrise: 'Sunrise',
+    sunset: 'Sunset',
+    airQualityIndex: 'Air Quality Index',
+    pm25: 'PM2.5',
+    pm10: 'PM10',
+    co: 'CO',
+    no2: 'NO₂',
+    o3: 'O₃',
+    so2: 'SO₂',
+    loading: 'Loading...',
+    error: 'Error loading weather data',
+    searchError: 'Error searching cities',
+    noResults: 'No cities found',
+    today: 'Today',
+    tomorrow: 'Tomorrow',
+    dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    aqiLevels: ['Good', 'Fair', 'Moderate', 'Poor', 'Very Poor']
+  },
+  hi: {
+    appTitle: 'पेशेवर मौसम डैशबोर्ड',
+    searchPlaceholder: 'शहर खोजें...',
+    currentWeather: 'वर्तमान मौसम',
+    forecast: '5-दिन का पूर्वानुमान',
+    airQuality: 'वायु गुणवत्ता',
+    temperature: 'तापमान',
+    feelsLike: 'महसूस होता है',
+    humidity: 'आर्द्रता',
+    pressure: 'दबाव',
+    windSpeed: 'हवा की गति',
+    visibility: 'दृश्यता',
+    sunrise: 'सूर्योदय',
+    sunset: 'सूर्यास्त',
+    airQualityIndex: 'वायु गुणवत्ता सूचकांक',
+    pm25: 'PM2.5',
+    pm10: 'PM10',
+    co: 'CO',
+    no2: 'NO₂',
+    o3: 'O₃',
+    so2: 'SO₂',
+    loading: 'लोड हो रहा है...',
+    error: 'मौसम डेटा लोड करने में त्रुटि',
+    searchError: 'शहर खोजने में त्रुटि',
+    noResults: 'कोई शहर नहीं मिला',
+    today: 'आज',
+    tomorrow: 'कल',
+    dayNames: ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'],
+    monthNames: ['जन', 'फर', 'मार', 'अप्र', 'मई', 'जून', 'जुल', 'अग', 'सित', 'अक्ट', 'नव', 'दिस'],
+    aqiLevels: ['अच्छा', 'संतोषजनक', 'मध्यम', 'खराब', 'बहुत खराब']
+  },
+  kn: {
+    appTitle: 'ವೃತ್ತಿಪರ ಹವಾಮಾನ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',
+    searchPlaceholder: 'ನಗರವನ್ನು ಹುಡುಕಿ...',
+    currentWeather: 'ಪ್ರಸ್ತುತ ಹವಾಮಾನ',
+    forecast: '5-ದಿನದ ಮುನ್ನೋಟ',
+    airQuality: 'ವಾಯು ಗುಣಮಟ್ಟ',
+    temperature: 'ತಾಪಮಾನ',
+    feelsLike: 'ಅನುಭವವಾಗುತ್ತದೆ',
+    humidity: 'ತೇವಾಂಶ',
+    pressure: 'ಒತ್ತಡ',
+    windSpeed: 'ಗಾಳಿಯ ವೇಗ',
+    visibility: 'ಗೋಚರತೆ',
+    sunrise: 'ಸೂರ್ಯೋದಯ',
+    sunset: 'ಸೂರ್ಯಾಸ್ತ',
+    airQualityIndex: 'ವಾಯು ಗುಣಮಟ್ಟದ ಸೂಚ್ಯಂಕ',
+    pm25: 'PM2.5',
+    pm10: 'PM10',
+    co: 'CO',
+    no2: 'NO₂',
+    o3: 'O₃',
+    so2: 'SO₂',
+    loading: 'ಲೋಡ್ ಆಗುತ್ತಿದೆ...',
+    error: 'ಹವಾಮಾನ ಡೇಟಾ ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ',
+    searchError: 'ನಗರಗಳನ್ನು ಹುಡುಕುವಲ್ಲಿ ದೋಷ',
+    noResults: 'ಯಾವುದೇ ನಗರಗಳು ಕಂಡುಬಂದಿಲ್ಲ',
+    today: 'ಇಂದು',
+    tomorrow: 'ನಾಲೆ',
+    dayNames: ['ಭಾನುವಾರ', 'ಸೋಮವಾರ', 'ಮಂಗಳವಾರ', 'ಬುಧವಾರ', 'ಗುರುವಾರ', 'ಶುಕ್ರವಾರ', 'ಶನಿವಾರ'],
+    monthNames: ['ಜನ', 'ಫೆಬ್', 'ಮಾರ್', 'ಏಪ್ರ', 'ಮೇ', 'ಜೂನ್', 'ಜುಲೈ', 'ಆಗ', 'ಸೆಪ್ಟ', 'ಅಕ್ಟೋ', 'ನವೆಂ', 'ಡಿಸೆಂ'],
+    aqiLevels: ['ಉತ್ತಮ', 'ಸಮತೋಲಿತ', 'ಮಧ್ಯಮ', 'ಕೆಟ್ಟ', 'ಅತ್ಯಂತ ಕೆಟ್ಟ']
+  }
+};
