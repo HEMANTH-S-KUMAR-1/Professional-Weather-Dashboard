@@ -36,7 +36,7 @@ Enter the following build settings:
 Add the following environment variables:
 
 - `OWM_API_KEY`: Your OpenWeatherMap API key
-- `NODE_VERSION`: 18 (or your preferred Node version)
+- `NODE_VERSION`: 18.20.8 (or your preferred Node version)
 
 ### 4. Advanced Settings (Optional)
 
