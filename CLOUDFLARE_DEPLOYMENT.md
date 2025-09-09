@@ -35,7 +35,7 @@ Enter the following build settings:
 
 Add the following environment variables:
 
-- `OWM_API_KEY`: Your OpenWeatherMap API key
+- `OWM_API_KEY`: Your OpenWeatherMap API key (required for the API functions to work)
 - `NODE_VERSION`: 18.20.8 (or your preferred Node version)
 
 ### 4. Advanced Settings (Optional)
@@ -51,11 +51,13 @@ Click "Save and Deploy" to start the build and deployment process.
 
 Since Cloudflare Pages hosts static content, you have several options for your backend:
 
-### Option 1: Cloudflare Workers
+### Option 1: Cloudflare Functions (Recommended)
 
-1. Convert your Express backend to Cloudflare Workers
-2. Use Workers KV for storage if needed
-3. Deploy using Wrangler CLI
+The project now includes Cloudflare Functions that proxy requests to OpenWeatherMap API:
+
+1. The `/functions/api/[[path]].js` file handles all API requests
+2. Make sure to set the `OWM_API_KEY` environment variable in your Cloudflare Pages settings
+3. No additional configuration needed - just deploy!
 
 ### Option 2: Separate Backend Hosting
 
