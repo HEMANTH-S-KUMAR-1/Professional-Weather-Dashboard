@@ -3,18 +3,14 @@
 name = "professional-weather-dashboard"
 compatibility_date = "2025-09-09"
 
-# Pages specific configuration
-[pages]
-build_command = "npm run build"
+# Build configuration
+build.command = "npm run build"
+build.output = "dist"
+
+# This is the key property Cloudflare Pages is looking for
 pages_build_output_dir = "dist"
 
-[build]
-command = "npm run build"
-upload.format = "service-worker"
-
-[site]
-bucket = "./dist"
-
+# Environment variables
 [build.environment]
 NODE_VERSION = "18"
 
