@@ -85,10 +85,20 @@ export const useWeatherData = (): UseWeatherDataReturn => {
     if (!query.trim()) return [];
     
     try {
-      const response = await fetch(`${API_BASE}/geo/direct?q=${encodeURIComponent(query)}&limit=5`);
-      if (!response.ok) throw new Error('City search failed');
+      const response = await fetch(`${API_BASE}/geocoding?q=${encodeURIComponent(query)}&limit=5`);
       
-      return await response.json();
+      if (!response.ok) {
+        console.error('City search failed:', response.status, response.statusText);
+        throw new Error('City search failed');
+      }
+      
+      const text = await response.text();
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error('Failed to parse geocoding JSON:', text.substring(0, 100) + '...');
+        throw new Error('Invalid JSON response from geocoding API');
+      }
     } catch (err) {
       console.error('City search error:', err);
       return [];

@@ -84,7 +84,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onLocationSelect, placehol
       </div>
 
       <AnimatePresence>
-        {showResults && results.length > 0 && (
+        {showResults && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -97,26 +97,36 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onLocationSelect, placehol
               }
             `}
           >
-            {results.map((location, index) => (
-              <motion.button
-                key={`${location.lat}-${location.lon}`}
-                onClick={() => handleLocationSelect(location)}
-                className={`
-                  w-full text-left px-4 py-3 flex items-center space-x-3 transition-colors duration-200
-                  ${isDark ? 'hover:bg-gray-700/50' : 'hover:bg-white/50'}
-                  ${isDark ? 'text-gray-200' : 'text-gray-700'}
-                `}
-                whileHover={{ x: 2 }}
-              >
-                <MapPin className="w-4 h-4 flex-shrink-0" />
-                <div className="flex-1">
-                  <div className="font-medium">{location.name}</div>
-                  <div className="text-sm opacity-70">
-                    {location.state ? `${location.state}, ` : ''}{location.country}
+            {isSearching ? (
+              <div className={`px-4 py-3 text-center ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                Searching...
+              </div>
+            ) : results.length > 0 ? (
+              results.map((location) => (
+                <motion.button
+                  key={`${location.lat}-${location.lon}`}
+                  onClick={() => handleLocationSelect(location)}
+                  className={`
+                    w-full text-left px-4 py-3 flex items-center space-x-3 transition-colors duration-200
+                    ${isDark ? 'hover:bg-gray-700/50' : 'hover:bg-white/50'}
+                    ${isDark ? 'text-gray-200' : 'text-gray-700'}
+                  `}
+                  whileHover={{ x: 2 }}
+                >
+                  <MapPin className="w-4 h-4 flex-shrink-0" />
+                  <div className="flex-1">
+                    <div className="font-medium">{location.name}</div>
+                    <div className="text-sm opacity-70">
+                      {location.state ? `${location.state}, ` : ''}{location.country}
+                    </div>
                   </div>
-                </div>
-              </motion.button>
-            ))}
+                </motion.button>
+              ))
+            ) : (
+              <div className={`px-4 py-3 text-center ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
+                No locations found. Please check if the API key is set correctly.
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

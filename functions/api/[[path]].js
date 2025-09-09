@@ -97,9 +97,49 @@ export async function onRequest(context) {
 
     // Fetch data from OpenWeatherMap
     const response = await fetch(openWeatherUrl);
-    const data = await response.json();
+    
+    // Check if the response is OK
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`OpenWeatherMap API error: ${response.status} ${response.statusText}`);
+      console.error(`Response body: ${errorText.substring(0, 200)}...`);
+      
+      return new Response(JSON.stringify({ 
+        error: 'OpenWeatherMap API error', 
+        status: response.status,
+        message: `Failed to fetch data from OpenWeatherMap: ${response.statusText}`,
+        details: "This is likely due to an invalid API key or rate limiting"
+      }), {
+        status: response.status,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+    }
+    
+    // Parse the response as JSON with error handling
+    let data;
+    try {
+      const responseText = await response.text();
+      data = JSON.parse(responseText);
+    } catch (error) {
+      console.error('Failed to parse OpenWeatherMap response as JSON', error);
+      return new Response(JSON.stringify({ 
+        error: 'Invalid response from OpenWeatherMap', 
+        message: 'Failed to parse response as JSON',
+        details: "The response from OpenWeatherMap was not valid JSON"
+      }), {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+    }
     
     // Return the response
+    console.log(`Successfully fetched data from OpenWeatherMap API for ${path}`);
     return new Response(JSON.stringify(data), {
       headers: {
         'Content-Type': 'application/json',
@@ -109,7 +149,12 @@ export async function onRequest(context) {
     });
   } 
   catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch data' }), {
+    console.error('Error in Cloudflare Function:', error);
+    return new Response(JSON.stringify({ 
+      error: 'Failed to fetch data',
+      message: error.message || 'An unexpected error occurred',
+      path: path
+    }), {
       status: 500,
       headers: {
         'Content-Type': 'application/json',
