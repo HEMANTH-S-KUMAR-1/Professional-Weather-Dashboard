@@ -8,6 +8,7 @@
     "dev:frontend": "vite",
     "dev:backend": "cd backend && node server.js",
     "build": "vite build",
+    "build:cloudflare": "npm install terser --no-save && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "postinstall": "cd backend && npm install"

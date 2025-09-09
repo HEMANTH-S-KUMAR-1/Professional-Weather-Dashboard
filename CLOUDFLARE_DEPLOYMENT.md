@@ -27,7 +27,7 @@ Enter the following build settings:
 - **Framework preset**: Select "Vite" from the dropdown menu
   - This automatically configures appropriate build settings for Vite projects
   - If "Vite" is not available, you can select "Custom" and manually enter the build commands
-- **Build command**: `npm run build`
+- **Build command**: `npm run build:cloudflare`
 - **Build output directory**: `dist`
 - **Root directory**: Leave empty
 
@@ -87,8 +87,10 @@ Since Cloudflare Pages hosts static content, you have several options for your b
 ## Troubleshooting
 
 - **Build failures**: Check build logs for errors
+  - If you see a "terser not found" error, use the `npm run build:cloudflare` command which automatically installs terser before building
 - **API connectivity issues**: Verify environment variables and CORS settings
 - **404 errors**: Check your `_redirects` file configuration
 - **Performance issues**: Use Cloudflare's Analytics to identify bottlenecks
+- **Wrangler.toml issues**: If you're using a wrangler.toml file, ensure it has the `pages_build_output_dir` property correctly set
 
 For additional help, refer to [Cloudflare Pages documentation](https://developers.cloudflare.com/pages/).
