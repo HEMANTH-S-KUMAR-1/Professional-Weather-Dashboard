@@ -24,6 +24,9 @@ Enter the following build settings:
 
 - **Project name**: professional-weather-dashboard (or your preferred name)
 - **Production branch**: main (or your main branch)
+- **Framework preset**: Select "Vite" from the dropdown menu
+  - This automatically configures appropriate build settings for Vite projects
+  - If "Vite" is not available, you can select "Custom" and manually enter the build commands
 - **Build command**: `npm run build`
 - **Build output directory**: `dist`
 - **Root directory**: Leave empty
