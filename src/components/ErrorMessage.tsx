@@ -29,6 +29,21 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, onRetry, is
         <AlertCircle className={`w-16 h-16 mx-auto mb-4 ${isDark ? 'text-red-400' : 'text-red-500'}`} />
       </motion.div>
       
+      <h2 className={`text-xl font-bold mb-2 ${isDark ? 'text-red-300' : 'text-red-600'}`}>
+        Something went wrong
+      </h2>
+      
+      <p className={`mb-6 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+        {message}
+      </p>
+      
+      {message.includes('API key') && (
+        <div className={`mb-6 text-sm p-4 rounded ${isDark ? 'bg-gray-800 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>
+          <p className="font-semibold">Possible Fix:</p>
+          <p>Please make sure the OWM_API_KEY environment variable is set in your Cloudflare Pages dashboard.</p>
+        </div>
+      )}
+      
       <h3 className={`text-xl font-semibold mb-2 ${isDark ? 'text-red-300' : 'text-red-700'}`}>
         Something went wrong
       </h3>

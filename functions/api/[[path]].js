@@ -1,9 +1,24 @@
 export async function onRequest(context) {
+  // Handle CORS preflight requests
+  if (context.request.method === "OPTIONS") {
+    return new Response(null, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, HEAD, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Max-Age": "86400",
+      }
+    });
+  }
+
   // Get the API key from environment variables
   const OWM_API_KEY = context.env.OWM_API_KEY;
   
   if (!OWM_API_KEY) {
-    return new Response(JSON.stringify({ error: 'API key not configured' }), {
+    return new Response(JSON.stringify({ 
+      error: 'API key not configured',
+      message: 'Please set the OWM_API_KEY environment variable in Cloudflare Pages settings'
+    }), {
       status: 500,
       headers: {
         'Content-Type': 'application/json',
@@ -23,13 +38,30 @@ export async function onRequest(context) {
   // Forward to OpenWeatherMap API
   let openWeatherUrl;
   try {
+    // Log information for debugging
+    console.log(`Processing API request for path: ${path}`);
+    
     if (path.includes('/weather/current')) {
       // Current weather endpoint
       const lat = params.get('lat');
       const lon = params.get('lon');
       const lang = params.get('lang') || 'en';
       
+      if (!lat || !lon) {
+        return new Response(JSON.stringify({ 
+          error: 'Missing parameters', 
+          message: 'lat and lon are required' 
+        }), {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+      }
+      
       openWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&lang=${lang}&units=metric&appid=${OWM_API_KEY}`;
+      console.log(`Fetching current weather for lat=${lat}, lon=${lon}`);
     } 
     else if (path.includes('/weather/forecast')) {
       // Forecast endpoint

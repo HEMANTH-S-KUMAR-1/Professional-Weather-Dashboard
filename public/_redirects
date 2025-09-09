@@ -2,5 +2,5 @@
 
 # API requests are now handled by Cloudflare Functions in /functions/api/[[path]].js
 
-# SPA fallback - Always return index.html for any unknown routes
-/*    /index.html   200
+# SPA fallback - Fixed to avoid infinite loops
+/* /index.html 200

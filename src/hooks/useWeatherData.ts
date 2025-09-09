@@ -33,20 +33,47 @@ export const useWeatherData = (): UseWeatherDataReturn => {
         fetch(`${API_BASE}/weather/air-pollution?lat=${lat}&lon=${lon}`)
       ]);
 
+      // Check if any response is not OK
       if (!weatherRes.ok || !forecastRes.ok || !pollutionRes.ok) {
-        throw new Error('Failed to fetch weather data');
+        const errorResponse = !weatherRes.ok ? weatherRes : !forecastRes.ok ? forecastRes : pollutionRes;
+        const errorText = await errorResponse.text();
+        
+        // Try to parse as JSON, but handle if it's HTML
+        try {
+          const errorJson = JSON.parse(errorText);
+          throw new Error(errorJson.message || errorJson.error || 'Failed to fetch weather data');
+        } catch (parseError) {
+          // If it's HTML or invalid JSON, provide a more helpful error
+          if (errorText.includes('<!doctype') || errorText.includes('<html')) {
+            throw new Error('API returned HTML instead of JSON. Check if the API key is set correctly.');
+          } else {
+            throw new Error(`Failed to fetch weather data: ${errorResponse.status} ${errorResponse.statusText}`);
+          }
+        }
       }
 
+      // Parse JSON responses with error handling
+      const parseJsonSafely = async (response: Response) => {
+        const text = await response.text();
+        try {
+          return JSON.parse(text);
+        } catch (e) {
+          console.error('Failed to parse JSON:', text.substring(0, 100) + '...');
+          throw new Error('Invalid JSON response from API');
+        }
+      };
+
       const [weather, forecastData, pollution] = await Promise.all([
-        weatherRes.json(),
-        forecastRes.json(),
-        pollutionRes.json()
+        parseJsonSafely(weatherRes),
+        parseJsonSafely(forecastRes),
+        parseJsonSafely(pollutionRes)
       ]);
 
       setCurrentWeather(weather);
       setForecast(forecastData);
       setAirPollution(pollution);
     } catch (err) {
+      console.error('Weather data fetch error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');
       console.error('Weather data fetch error:', err);
     } finally {
