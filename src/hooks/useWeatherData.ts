@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { WeatherData, ForecastData, AirPollutionData, GeocodingResult } from '../types/weather';
 
 // Use relative URL in development, which will be proxied through Vite
@@ -116,11 +116,6 @@ export const useWeatherData = (): UseWeatherDataReturn => {
       return [];
     }
   };
-
-  // Fetch default location (Delhi) on component mount
-  useEffect(() => {
-    fetchWeatherData(28.6139, 77.2090); // Delhi coordinates
-  }, []);
 
   return {
     currentWeather,

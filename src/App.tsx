@@ -9,6 +9,7 @@ import { AirQualityCard } from './components/AirQualityCard';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { ErrorMessage } from './components/ErrorMessage';
 import { NotFoundPage } from './components/NotFoundPage';
+import { LocationDetector } from './components/LocationDetector';
 import { useWeatherData } from './hooks/useWeatherData';
 import { translations, Language } from './utils/translations';
 import { lazyLoad } from './utils/lazyLoad';
@@ -147,6 +148,7 @@ function App() {
                   onLocationSelect={handleLocationSelect}
                   placeholder={t.searchPlaceholder}
                   isDark={isDark}
+                  currentLanguage={currentLanguage}
                 />
               )}
               
@@ -165,6 +167,12 @@ function App() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Location Detector - Auto-detects user's location on page load */}
+        <LocationDetector
+          onLocationDetected={handleLocationSelect}
+          currentLanguage={currentLanguage}
+        />
+
         <AnimatePresence mode="wait">
           {currentRoute === 'home' ? (
             loading ? (

@@ -30,6 +30,19 @@ export interface Translations {
   dayNames: string[];
   monthNames: string[];
   aqiLevels: string[];
+  voiceSearch: {
+    start: string;
+    stop: string;
+    listening: string;
+    speakCity: string;
+  };
+  location: {
+    detecting: string;
+    detected: string;
+    denied: string;
+    error: string;
+    useDefault: string;
+  };
 }
 
 export const translations: Record<Language, Translations> = {
@@ -62,7 +75,20 @@ export const translations: Record<Language, Translations> = {
     tomorrow: 'Tomorrow',
     dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     monthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    aqiLevels: ['Good', 'Fair', 'Moderate', 'Poor', 'Very Poor']
+    aqiLevels: ['Good', 'Fair', 'Moderate', 'Poor', 'Very Poor'],
+    voiceSearch: {
+      start: 'Start voice search',
+      stop: 'Stop voice search',
+      listening: 'Listening...',
+      speakCity: 'Speak the city name',
+    },
+    location: {
+      detecting: 'Detecting your location...',
+      detected: 'Location detected',
+      denied: 'Location access denied',
+      error: 'Unable to detect location',
+      useDefault: 'Using default location',
+    },
   },
   hi: {
     appTitle: 'पेशेवर मौसम डैशबोर्ड',
@@ -93,7 +119,20 @@ export const translations: Record<Language, Translations> = {
     tomorrow: 'कल',
     dayNames: ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'],
     monthNames: ['जन', 'फर', 'मार', 'अप्र', 'मई', 'जून', 'जुल', 'अग', 'सित', 'अक्ट', 'नव', 'दिस'],
-    aqiLevels: ['अच्छा', 'संतोषजनक', 'मध्यम', 'खराब', 'बहुत खराब']
+    aqiLevels: ['अच्छा', 'संतोषजनक', 'मध्यम', 'खराब', 'बहुत खराब'],
+    voiceSearch: {
+      start: 'आवाज खोज शुरू करें',
+      stop: 'आवाज खोज बंद करें',
+      listening: 'सुन रहा है...',
+      speakCity: 'शहर का नाम बोलें',
+    },
+    location: {
+      detecting: 'आपका स्थान खोजा जा रहा है...',
+      detected: 'स्थान मिल गया',
+      denied: 'स्थान पहुंच अस्वीकृत',
+      error: 'स्थान खोजने में असमर्थ',
+      useDefault: 'डिफ़ॉल्ट स्थान का उपयोग',
+    },
   },
   kn: {
     appTitle: 'ವೃತ್ತಿಪರ ಹವಾಮಾನ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',
@@ -124,6 +163,19 @@ export const translations: Record<Language, Translations> = {
     tomorrow: 'ನಾಲೆ',
     dayNames: ['ಭಾನುವಾರ', 'ಸೋಮವಾರ', 'ಮಂಗಳವಾರ', 'ಬುಧವಾರ', 'ಗುರುವಾರ', 'ಶುಕ್ರವಾರ', 'ಶನಿವಾರ'],
     monthNames: ['ಜನ', 'ಫೆಬ್', 'ಮಾರ್', 'ಏಪ್ರ', 'ಮೇ', 'ಜೂನ್', 'ಜುಲೈ', 'ಆಗ', 'ಸೆಪ್ಟ', 'ಅಕ್ಟೋ', 'ನವೆಂ', 'ಡಿಸೆಂ'],
-    aqiLevels: ['ಉತ್ತಮ', 'ಸಮತೋಲಿತ', 'ಮಧ್ಯಮ', 'ಕೆಟ್ಟ', 'ಅತ್ಯಂತ ಕೆಟ್ಟ']
+    aqiLevels: ['ಉತ್ತಮ', 'ಸಮತೋಲಿತ', 'ಮಧ್ಯಮ', 'ಕೆಟ್ಟ', 'ಅತ್ಯಂತ ಕೆಟ್ಟ'],
+    voiceSearch: {
+      start: 'ಧ್ವನಿ ಹುಡುಕಾಟ ಪ್ರಾರಂಭಿಸಿ',
+      stop: 'ಧ್ವನಿ ಹುಡುಕಾಟ ನಿಲ್ಲಿಸಿ',
+      listening: 'ಕೇಳುತ್ತಿದೆ...',
+      speakCity: 'ನಗರದ ಹೆಸರನ್ನು ಹೇಳಿ',
+    },
+    location: {
+      detecting: 'ನಿಮ್ಮ ಸ್ಥಳವನ್ನು ಪತ್ತೆ ಮಾಡಲಾಗುತ್ತಿದೆ...',
+      detected: 'ಸ್ಥಳ ಪತ್ತೆಯಾಗಿದೆ',
+      denied: 'ಸ್ಥಳ ಪ್ರವೇಶ ನಿರಾಕರಿಸಲಾಗಿದೆ',
+      error: 'ಸ್ಥಳ ಪತ್ತೆ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ',
+      useDefault: 'ಡಿಫಾಲ್ಟ್ ಸ್ಥಳವನ್ನು ಬಳಸಲಾಗುತ್ತಿದೆ',
+    },
   }
 };
