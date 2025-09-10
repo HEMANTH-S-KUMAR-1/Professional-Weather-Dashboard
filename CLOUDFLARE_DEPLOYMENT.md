@@ -45,26 +45,41 @@ Enter the following **optimized** build settings:
 - **Build output directory**: `dist`
 - **Root directory**: Leave empty
 
-### 3. Configure Environment Variables ⚡ **ENHANCED**
+### 3. Configure Environment Variables ⚡ **CRITICAL**
 
-Add the following environment variables:
+⚠️ **IMPORTANT**: Without this step, your deployment will show "No locations found" errors.
 
-- `OWM_API_KEY`: Your OpenWeatherMap API key (required for the API functions to work)
-  - ⚠️ **IMPORTANT**: With new optimizations, your API usage will be **significantly reduced**
-  - Previous version: 100+ calls/minute → **New version: 3-6 calls/minute**
-  - Must be a valid API key from OpenWeatherMap
-  - You can get a free API key by signing up at [OpenWeatherMap](https://home.openweathermap.org/users/sign_up)
-  - New API keys may take up to 2 hours to activate
-  - Key should begin with numbers and letters, be about 32 characters long
-  - Verify that it has access to the following APIs:
-    - Current Weather Data ✅
-    - 5 Day / 3 Hour Forecast ✅
-    - Air Pollution API ✅
-    - Geocoding API ✅
-  - Keep this key secret as it has usage limits
-  - ✅ **Rate limit protection built-in**: App now prevents API abuse
-- `NODE_VERSION`: 18.20.8 (or your preferred Node version)
-- `PORT`: 3001 ⚡ **NEW** (for backend compatibility)
+Add the following environment variables in Cloudflare Pages Dashboard:
+
+1. Go to your project dashboard
+2. Navigate to **Settings** → **Environment variables**
+3. Click **Add variable** and configure:
+
+**Required Variables:**
+
+| Variable Name | Value | Environment | Notes |
+|---------------|-------|-------------|-------|
+| `OWM_API_KEY` | `your_api_key_here` | **Both Production & Preview** | ⚡ **CRITICAL** - Without this, searches will fail |
+| `NODE_VERSION` | `18.20.8` | Both | Optional - Latest stable Node |
+
+⚠️ **CRITICAL SETUP STEPS:**
+
+1. **Variable Name**: Must be exactly `OWM_API_KEY` (case-sensitive)
+2. **Environment**: Select **BOTH** "Production" AND "Preview" environments
+3. **Value**: Your complete OpenWeatherMap API key (32 characters, starts with letters/numbers)
+4. **Save & Redeploy**: After saving, trigger a new deployment for changes to take effect
+
+**Example API Key Format:**
+```
+fc145dd4b6ef156ad8cc792320c3689f
+```
+
+**🚨 Common Error Fix:**
+If you see "No locations found. Please check if the API key is set correctly":
+1. Verify the environment variable is named exactly `OWM_API_KEY`
+2. Ensure it's set for both Production AND Preview environments
+3. Redeploy your site after adding the variable
+4. Test at: `https://your-site.pages.dev/api-test`
 
 After deployment, you can verify your API key is working correctly by visiting the `/api-test` endpoint of your deployed site. For more comprehensive API diagnostics, visit the `/diagnostics` page.
 
