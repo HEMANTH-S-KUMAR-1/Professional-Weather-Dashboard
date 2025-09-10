@@ -11,4 +11,4 @@ Disallow: /api/
 Disallow: /functions/
 
 # Sitemap
-Sitemap: https://your-weather-dashboard-url.com/sitemap.xml
+Sitemap: https://professional-weather-dashboard.pages.dev/sitemap.xml

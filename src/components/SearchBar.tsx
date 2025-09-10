@@ -101,12 +101,17 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onLocationSelect, placehol
           <Search className={`
             absolute left-4 w-5 h-5 
             ${isDark ? 'text-gray-400' : 'text-gray-500'}
-          `} />
+          `} aria-hidden="true" />
           <input
             type="text"
             value={query}
             onChange={(e) => handleSearch(e.target.value)}
             placeholder={placeholder}
+            aria-label="Search for cities"
+            aria-expanded={showResults}
+            aria-haspopup="listbox"
+            aria-autocomplete="list"
+            role="combobox"
             className={`
               w-full pl-12 pr-4 py-3 bg-transparent border-none outline-none rounded-xl
               ${isDark ? 'text-white placeholder-gray-400' : 'text-gray-800 placeholder-gray-500'}
@@ -127,6 +132,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onLocationSelect, placehol
                   : 'bg-white/90 border-white/30'
                 }
               `}
+              role="listbox"
+              aria-label="Search results"
             >
               {isSearching ? (
                 <div className={`px-4 py-3 text-center ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
@@ -137,6 +144,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onLocationSelect, placehol
                   <motion.button
                     key={`${location.lat}-${location.lon}`}
                     onClick={() => handleLocationSelect(location)}
+                    role="option"
+                    aria-label={`Select ${location.name}, ${location.country}`}
                     className={`
                       w-full text-left px-4 py-3 flex items-center space-x-3 transition-colors duration-200
                       ${isDark ? 'hover:bg-gray-700/50' : 'hover:bg-white/50'}
@@ -144,7 +153,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onLocationSelect, placehol
                     `}
                     whileHover={{ x: 2 }}
                   >
-                    <MapPin className="w-4 h-4 flex-shrink-0" />
+                    <MapPin className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                     <div className="flex-1">
                       <div className="font-medium">{location.name}</div>
                       <div className="text-sm opacity-70">
