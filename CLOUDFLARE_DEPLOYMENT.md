@@ -60,7 +60,7 @@ Add the following environment variables in Cloudflare Pages Dashboard:
 | Variable Name | Value | Environment | Notes |
 |---------------|-------|-------------|-------|
 | `OWM_API_KEY` | `your_api_key_here` | **Both Production & Preview** | ⚡ **CRITICAL** - Without this, searches will fail |
-| `NODE_VERSION` | `18.20.8` | Both | Compatible with Cloudflare Pages |
+| `NODE_VERSION` | `20.19.0` | Both | Required - Latest stable Node for Vite 7+ |
 
 ⚠️ **CRITICAL SETUP STEPS:**
 
@@ -193,7 +193,7 @@ After deployment, monitor these metrics:
 - **Performance issues**: 
   - ✅ Should be significantly improved with new optimizations
   - Use Cloudflare's Analytics to identify remaining bottlenecks
-- **Wrangler.toml issues**: If you're using a wrangler.toml file, ensure it has the `pages_build_output_dir` property correctly set
+- **Wrangler.toml removed**: No longer needed for Cloudflare Pages (was causing compatibility issues)
 
 ### API Testing Tools
 
