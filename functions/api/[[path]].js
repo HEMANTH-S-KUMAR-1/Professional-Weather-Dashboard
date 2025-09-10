@@ -48,6 +48,13 @@ export async function onRequest(context) {
   const path = url.pathname.replace('/api', '');
   const params = url.searchParams;
   
+  // Debug logging
+  console.log(`🔍 API Request Debug:`);
+  console.log(`- Full URL: ${context.request.url}`);
+  console.log(`- Path after /api removed: ${path}`);
+  console.log(`- Query params: ${params.toString()}`);
+  console.log(`- API key configured: ${OWM_API_KEY ? 'Yes' : 'No'}`);
+  
   // Add the API key to the parameters
   params.append('appid', OWM_API_KEY);
   
@@ -94,12 +101,26 @@ export async function onRequest(context) {
       
       openWeatherUrl = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${OWM_API_KEY}`;
     }
-    else if (path.includes('/geocoding')) {
-      // Geocoding endpoint
+    else if (path.includes('/geo/direct')) {
+      // Geocoding endpoint - City search
       const q = params.get('q');
       const limit = params.get('limit') || 5;
       
-      openWeatherUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${q}&limit=${limit}&appid=${OWM_API_KEY}`;
+      if (!q || !q.trim()) {
+        return new Response(JSON.stringify({ 
+          error: 'Missing parameters', 
+          message: 'City name (q parameter) is required' 
+        }), {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
+      }
+      
+      openWeatherUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(q)}&limit=${limit}&appid=${OWM_API_KEY}`;
+      console.log(`Searching cities for query: ${q}`);
     }
     else {
       return new Response(JSON.stringify({ error: 'Invalid endpoint' }), {
