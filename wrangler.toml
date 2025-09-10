@@ -1,16 +1,8 @@
-name = "professional-weather-dashboard"
-main = "functions/[[path]].js"
+# Cloudflare Pages configuration
+pages_build_output_dir = "dist"
 
 [build]
 command = "npm run build:cloudflare"
-cwd = "."
 
 [build.environment_variables]
 NODE_VERSION = "20.19.0"
-
-# This is required at root level for Pages
-pages_build_output_dir = "dist"
-
-[vars]
-# Environment variables will be set in Cloudflare Pages dashboard
-# OWM_API_KEY will be configured in dashboard
