@@ -34,7 +34,7 @@ Your deployment now includes:
 Enter the following **optimized** build settings:
 
 - **Project name**: professional-weather-dashboard (or your preferred name)
-- **Production branch**: feature/code-optimization-and-review (latest optimized branch)
+- **Production branch**: main (latest stable branch)
 - **Framework preset**: Select "Vite" from the dropdown menu
   - This automatically configures appropriate build settings for Vite projects
   - If "Vite" is not available, you can select "Custom" and manually enter the build commands
@@ -60,7 +60,7 @@ Add the following environment variables in Cloudflare Pages Dashboard:
 | Variable Name | Value | Environment | Notes |
 |---------------|-------|-------------|-------|
 | `OWM_API_KEY` | `your_api_key_here` | **Both Production & Preview** | ⚡ **CRITICAL** - Without this, searches will fail |
-| `NODE_VERSION` | `18.20.8` | Both | Optional - Latest stable Node |
+| `NODE_VERSION` | `18.20.8` | Both | Compatible with Cloudflare Pages |
 
 ⚠️ **CRITICAL SETUP STEPS:**
 

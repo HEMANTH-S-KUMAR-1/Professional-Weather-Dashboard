@@ -2,5 +2,5 @@
 
 # API requests are now handled by Cloudflare Functions in /functions/api/[[path]].js
 
-# SPA fallback - Using 200 status code for Single Page Application routing
-/* /index.html 200
+# SPA fallback - Using 200! to prevent infinite loops
+/*    /index.html   200!

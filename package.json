@@ -8,7 +8,7 @@
     "dev:frontend": "vite",
     "dev:backend": "cd backend && node server.js",
     "build": "vite build",
-    "build:cloudflare": "npm install terser --no-save && vite build",
+    "build:cloudflare": "npm install terser --no-save && NODE_OPTIONS='--max-old-space-size=4096' vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "postinstall": "cd backend && npm install"
@@ -38,6 +38,6 @@
     "vite": "^7.1.5"
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=18.20.8"
   }
 }
